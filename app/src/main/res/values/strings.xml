@@ -14,4 +14,16 @@
     <string name="ng_k">Đăng ký</string>
     <string name="b_n_c_t_i_kho_n">Bạn đã có tài khoản?</string>
     <string name="ng_nh_p">Đăng nhập</string>
+    <string name="avatar">avatar</string>
+    <string name="greeting">Xin chào!</string>
+    <string name="name">name</string>
+    <string name="search_placeholder">Tìm kiếm thông tin về bác sĩ, bài báo, cơ sở y tế,...</string>
+    <string name="todo">TODO</string>
+    <string name="list_docter">Danh sách bác sỹ</string>
+    <string name="hospital">Cơ sở ý tế</string>
+    <string name="article">Bài viết sức khỏe</string>
+    <string name="health_record">Hồ sơ sức khỏe</string>
+    <string name="Heart_rate">Nhịp tim</string>
+    <string name="Steps">Bước</string>
+    <string name="Sleeping_time">Thời gian ngủ</string>
 </resources>
