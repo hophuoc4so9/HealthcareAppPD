@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">My_Project</string>
+    <string name="login">Đăng ký tài khoản</string>
+    <string name="enter_your_name">Họ và tên</string>
+    <string name="password">Mật khẩu</string>
+    <string name="email">Email</string>
+    <string name="terms_of_service_and_privacy_policy"> Terms of Service and Privacy Policy</string>
+    <string name="i_agree_to_the_healthcare">I agree to the healthcare Terms of Service and Privacy Policy</string>
+    <string name="ng_k">Đăng ký</string>
+    <string name="b_n_c_t_i_kho_n">Bạn đã có tài khoản?</string>
+    <string name="ng_nh_p">Đăng nhập</string>
+</resources>
