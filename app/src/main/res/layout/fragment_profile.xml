@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.ui.ProfileFragment">
+    tools:context=".presentation.ui.Profile.ProfileFragment"
+    android:background="@color/white">
 
-    <!-- Avatar -->
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgAvatar"
         android:layout_width="100dp"
@@ -15,11 +15,9 @@
         app:civ_border_width="2dp"
         app:civ_border_color="@color/white"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintTop_margin="40dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Tên -->
     <TextView
         android:id="@+id/txtName"
         android:layout_width="wrap_content"
@@ -32,7 +30,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Stats -->
     <LinearLayout
         android:id="@+id/lytStats"
         android:layout_width="0dp"
@@ -44,7 +41,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Heart Rate -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -72,7 +68,6 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- Calories -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -122,14 +117,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1000bước/ngày"
+                android:text="1000 bước/ngày"
                 android:textColor="@color/blue"
                 android:textStyle="bold" />
         </LinearLayout>
 
     </LinearLayout>
 
-    <!-- Menu items -->
     <LinearLayout
         android:id="@+id/lytMenu"
         android:layout_width="0dp"
@@ -144,38 +138,25 @@
             android:id="@+id/menuSaved"
             android:tag="My Saved" />
 
-        <!-- Appointment -->
+        <include layout="@layout/item_menu_profile"
+            android:id="@+id/menuBmi"
+            android:tag="Tính BMI" />
+
         <include layout="@layout/item_menu_profile"
             android:id="@+id/menuAppointment"
             android:tag="Appointment" />
 
-        <!-- Payment Method -->
         <include layout="@layout/item_menu_profile"
             android:id="@+id/menuPayment"
             android:tag="Payment Method" />
 
-        <!-- FAQs -->
         <include layout="@layout/item_menu_profile"
             android:id="@+id/menuFaqs"
             android:tag="FAQs" />
 
-        <!-- Logout -->
         <include layout="@layout/item_menu_profile"
             android:id="@+id/menuLogout"
             android:tag="Logout" />
     </LinearLayout>
-
-    <!-- Bottom Navigation -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigation"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        app:itemIconTint="@color/blue"
-        app:itemTextColor="@color/blue"
-        app:menu="@menu/bottom_nav_menu"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,10 +1,14 @@
-package com.example.healthcareapppd.presentation.ui
+package com.example.healthcareapppd.presentation.ui.Auth
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Button
+import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.healthcareapppd.AuthActivity
 import com.example.healthcareapppd.R

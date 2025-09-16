@@ -6,14 +6,13 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     android:background="@color/background_light"
-    tools:context=".presentation.ui.ReportFragment">
+    tools:context=".presentation.ui.Report.ReportFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Tiêu đề -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -23,7 +22,6 @@
             android:textColor="@color/black"
             android:layout_marginBottom="16dp"/>
 
-        <!-- Row 1: Heart rate + Steps -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -96,7 +94,6 @@
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
 
-        <!-- Row 2: Calories + Sleep -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -169,13 +166,19 @@
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
 
-        <!-- Nút xem tất cả (bên phải dưới cùng) -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCalculateBmi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tính chỉ số BMI"
+            android:layout_marginTop="24dp" />
+
         <TextView
             android:id="@+id/btnViewAll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:paddingTop="0dp"
+            android:paddingTop="8dp"
             android:text="Xem tất cả"
             android:textColor="@color/royalblue"
             android:textSize="14sp"
