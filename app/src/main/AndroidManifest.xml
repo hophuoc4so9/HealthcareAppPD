@@ -13,7 +13,7 @@
         android:theme="@style/Theme.My_Project">
 
         <activity
-            android:name=".AuthActivity"
+            android:name=".OnboardingActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.My_Project"
@@ -23,9 +23,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".WelcomeActivity"
+            android:exported="true">
+        </activity>
+
+        <activity
+            android:name=".AuthActivity"
+            android:exported="true">
+        </activity>
         <activity android:name=".MainActivity"
             android:exported="true"/>
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true">
 
+        </activity>
     </application>
 
 </manifest>

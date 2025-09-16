@@ -8,7 +8,6 @@ import com.example.healthcareapppd.presentation.ui.HomeFragment
 import com.example.healthcareapppd.presentation.ui.NotificationFragment
 import com.example.healthcareapppd.presentation.ui.ProfileFragment
 import com.example.healthcareapppd.presentation.ui.ReportFragment
-import com.example.healthcareapppd.presentation.ui.AuthFragment // thêm
 
 class MainActivity : AppCompatActivity() {
 

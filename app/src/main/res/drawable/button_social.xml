@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- Nền trắng -->
+    <solid android:color="@android:color/white" />
+
+    <!-- Viền xám nhạt -->
+    <stroke
+        android:width="1dp"
+        android:color="#DDDDDD" />
+
+    <!-- Bo góc -->
+    <corners android:radius="12dp" />
+
+    <!-- Padding trong nút -->
+    <padding
+        android:left="32dp"
+        android:top="12dp"
+        android:right="12dp"
+        android:bottom="12dp" />
+</shape>

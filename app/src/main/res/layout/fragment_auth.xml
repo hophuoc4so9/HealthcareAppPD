@@ -5,14 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="30dp"
-    tools:context=".MainActivity">
+    tools:context=".AuthActivity">
 
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:text="@string/login"
+        android:text="@string/title_auth"
         android:textColor="@color/black"
         android:textSize="28sp"
         android:textStyle="bold"
@@ -23,36 +22,55 @@
 
     <EditText
         android:id="@+id/edtUsername"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="40dp"
         android:drawableStart="@drawable/baseline_person_24"
-        android:drawablePadding="10dp"
-        android:hint="@string/enter_your_name"
+        android:hint="@string/name"
         android:inputType="textPersonName"
-        style="@style/CustomEditTextStyle"
+        style="@style/EditText_Auth"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+    <EditText
+        android:id="@+id/edtPhone"
+        android:layout_marginTop="24dp"
+        android:drawableStart="@drawable/baseline_phone_24"
+        android:hint="@string/phone"
+        android:inputType="phone"
+        style="@style/EditText_Auth"
+        app:layout_constraintTop_toBottomOf="@id/edtUsername"
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <EditText
         android:id="@+id/edtEmail"
         android:layout_marginTop="24dp"
         android:drawableStart="@drawable/baseline_email_24"
-        android:drawablePadding="10dp"
         android:hint="@string/email"
         android:inputType="textEmailAddress"
-        style="@style/CustomEditTextStyle"
+        style="@style/EditText_Auth"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edtUsername" />
+        app:layout_constraintTop_toBottomOf="@id/edtPhone" />
 
     <EditText
         android:id="@+id/edtPassword"
+        android:inputType="textPassword"
         android:layout_marginTop="24dp"
         android:drawableStart="@drawable/baseline_lock_24"
-        android:drawableEnd="@drawable/baseline_remove_red_eye_24"
-        android:drawablePadding="10dp"
+        android:drawableEnd="@drawable/baseline_visibility_off_24"
         android:hint="@string/password"
-        style="@style/CustomEditTextStyle"
+        style="@style/EditText_Auth"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edtEmail" />
+
+    <EditText
+        android:id="@+id/edtConfirmPassword"
+        android:inputType="textPassword"
+        android:layout_marginTop="24dp"
+        android:drawableStart="@drawable/baseline_lock_open_24"
+        android:drawableEnd="@drawable/baseline_visibility_off_24"
+        android:hint="@string/confirmPassword"
+        style="@style/EditText_Auth"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edtPassword"/>
 
     <CheckBox
         android:id="@+id/checkTerms"
@@ -61,14 +79,14 @@
         android:layout_marginTop="18dp"
         android:button="@drawable/custom_checkbox"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edtPassword" />
+        app:layout_constraintTop_toBottomOf="@id/edtConfirmPassword" />
 
     <TextView
         android:id="@+id/tvTerms"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:text="@string/i_agree_to_the_healthcare"
+        android:layout_marginStart="14dp"
+        android:text="@string/clause"
         android:textColor="@color/black"
         android:textSize="19sp"
         app:layout_constraintBaseline_toBaselineOf="@id/checkTerms"
@@ -76,19 +94,18 @@
         app:layout_constraintStart_toEndOf="@id/checkTerms" />
 
     <Button
-        android:id="@+id/btnLogin"
+        android:id="@+id/btnSignup"
         android:layout_width="0dp"
         android:layout_height="72dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="64dp"
         android:background="@drawable/button_signup"
-        android:text="@string/ng_k"
+        android:text="@string/button_auth"
         android:textColor="@android:color/white"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvTerms"
-        tools:layout_editor_absoluteY="597dp"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -103,7 +120,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.14"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnLogin" />
+        app:layout_constraintTop_toBottomOf="@id/btnSignup" />
 
     <TextView
         android:id="@+id/textView"
@@ -112,12 +129,13 @@
         android:layout_marginTop="8dp"
         android:gravity="center"
         android:text="@string/ng_nh_p"
-        android:textColor="@color/black"
+        android:textColor="@color/blue"
         android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.916"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnLogin" />
+        app:layout_constraintTop_toBottomOf="@id/btnSignup" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

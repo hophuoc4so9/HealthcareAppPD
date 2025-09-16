@@ -9,5 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="text">#221F1F</color>
     <color name="darker_gray">#AAAAAA</color>
-    <color name="royalblue">#4169e1</color>
+    <color name="blue">#407CE2</color>
+    <color name="lavender">#e6e6fa</color>
 </resources>
