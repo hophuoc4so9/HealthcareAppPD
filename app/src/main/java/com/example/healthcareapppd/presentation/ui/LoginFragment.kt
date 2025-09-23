@@ -32,11 +32,9 @@ class LoginFragment : Fragment() {
             }
         }
 
-        // Khi nhấn "Đăng ký" thì chuyển sang RegisterFragment
-        binding.textView.setOnClickListener {
+        binding.tvSignup.setOnClickListener {
             val intent = Intent(requireContext(), AuthActivity::class.java)
             startActivity(intent)
-            activity?.finish() // đóng trang đăng ký, tránh quay lại
         }
 
         return binding.root

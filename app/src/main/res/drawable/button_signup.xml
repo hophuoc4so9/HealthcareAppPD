@@ -5,11 +5,12 @@
     <!-- Nền chính -->
     <item>
         <shape android:shape="rectangle">
-            <gradient
-                android:startColor="#2196F3"
-                android:endColor="#1976D2"
-                android:angle="270" />
+<!--            <gradient-->
+<!--                android:startColor="#2196F3"-->
+<!--                android:endColor="#1976D2"-->
+<!--                android:angle="270" />-->
             <corners android:radius="40dp" />
+            <solid android:color="@color/blue"/>
         </shape>
     </item>
 

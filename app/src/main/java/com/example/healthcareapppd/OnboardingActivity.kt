@@ -42,9 +42,11 @@ class OnboardingActivity : AppCompatActivity() {
         // Liên kết TabLayout với ViewPager2
         TabLayoutMediator(tabLayout, viewPager) { _, _ -> }.attach()
 
-        // Skip → nhảy thẳng trang cuối
+        // Skip → nhảy thẳng trang Welcome
         skipText.setOnClickListener {
-            viewPager.currentItem = fragmentList.size - 1
+            val intent = Intent(this, WelcomeActivity::class.java)
+            startActivity(intent)
+            finish()
         }
 
         // Next → sang trang tiếp, nếu cuối → sang WelcomeActivity

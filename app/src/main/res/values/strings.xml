@@ -13,7 +13,7 @@
     <string name="clause">I agree to the healthcare Terms of Service and Privacy Policy</string>
     <string name="button_auth">Đăng ký</string>
     <string name="b_n_c_t_i_kho_n">Bạn đã có tài khoản?</string>
-    <string name="ng_nh_p">Đăng nhập</string>
+    <string name="button_login">Đăng nhập</string>
     <string name="avatar">avatar</string>
     <string name="greeting">Xin chào!</string>
     <string name="search_placeholder">Tìm kiếm thông tin về bác sĩ, bài báo, cơ sở y tế,...</string>
@@ -36,4 +36,5 @@
     <string name="sign_in_facebook">Sign in with Facebook</string>
     <string name="skip">Skip</string>
     <string name="back_button">Quay lại</string>
+    <string name="title_activity_splash">SplashActivity</string>
 </resources>
