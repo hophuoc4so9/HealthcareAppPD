@@ -9,7 +9,13 @@
         android:id="@+id/navigation_home"
         android:name="com.example.healthcareapppd.presentation.ui.Home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+
+        <action
+            android:id="@+id/action_home_to_docter"
+            app:destination="@id/navigation_docter" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_profile"
@@ -40,5 +46,17 @@
         android:name="com.example.healthcareapppd.presentation.ui.bmi.BmiCalculatorFragment"
         android:label="BMI Calculator"
         tools:layout="@layout/fragment_bmi_calculator" />
+
+    <fragment
+        android:id="@+id/navigation_docter"
+        android:name="com.example.healthcareapppd.presentation.ui.Docter.DocterFragment"
+        android:label="Doctor"
+        tools:layout="@layout/docter_ffragment_item_list" >
+
+        <action
+            android:id="@+id/action_docter_to_home"
+            app:destination="@id/navigation_home" />
+
+    </fragment>
 
 </navigation>
