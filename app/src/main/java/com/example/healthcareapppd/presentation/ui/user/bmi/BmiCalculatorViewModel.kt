@@ -1,7 +1,6 @@
-package com.example.healthcareapppd.presentation.ui.bmi
+package com.example.healthcareapppd.presentation.ui.user.bmi
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.healthcareapppd.domain.usecase.BmiResult
 import com.example.healthcareapppd.domain.usecase.CalculateBmiUseCase
 import com.example.healthcareapppd.domain.usecase.Gender
@@ -9,7 +8,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
 data class BmiUiState(
     val result: BmiResult? = null,

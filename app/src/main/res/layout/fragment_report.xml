@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     android:background="@color/background_light"
-    tools:context=".presentation.ui.Report.ReportFragment">
+    tools:context=".presentation.ui.user.Report.ReportFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

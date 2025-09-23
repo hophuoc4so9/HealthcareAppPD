@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.healthcareapppd.presentation.ui.Home.HomeFragment"
+        android:name="com.example.healthcareapppd.presentation.ui.user.Home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" >
 
@@ -19,19 +19,19 @@
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.example.healthcareapppd.presentation.ui.Profile.ProfileFragment"
+        android:name="com.example.healthcareapppd.presentation.ui.user.Profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.example.healthcareapppd.presentation.ui.Notification.NotificationFragment"
+        android:name="com.example.healthcareapppd.presentation.ui.user.Notification.NotificationFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notification" />
 
     <fragment
         android:id="@+id/navigation_reports"
-        android:name="com.example.healthcareapppd.presentation.ui.Report.ReportFragment"
+        android:name="com.example.healthcareapppd.presentation.ui.user.Report.ReportFragment"
         android:label="@string/title_report"
         tools:layout="@layout/fragment_report">
 
@@ -43,13 +43,13 @@
 
     <fragment
         android:id="@+id/bmiCalculatorFragment"
-        android:name="com.example.healthcareapppd.presentation.ui.bmi.BmiCalculatorFragment"
+        android:name="com.example.healthcareapppd.presentation.ui.user.bmi.BmiCalculatorFragment"
         android:label="BMI Calculator"
         tools:layout="@layout/fragment_bmi_calculator" />
 
     <fragment
         android:id="@+id/navigation_docter"
-        android:name="com.example.healthcareapppd.presentation.ui.Docter.DocterFragment"
+        android:name="com.example.healthcareapppd.presentation.ui.user.Docter.DocterFragment"
         android:label="Doctor"
         tools:layout="@layout/docter_ffragment_item_list" >
 
@@ -58,5 +58,21 @@
             app:destination="@id/navigation_home" />
 
     </fragment>
+    <fragment
+        android:id="@+id/navigation_messageListFragment"
+        android:name="com.example.healthcareapppd.presentation.ui.chat.MessageListFragment"
+        android:label="Danh sách tin nhắn"
+        tools:layout="@layout/fragment_message_list">
+        <action
+            android:id="@+id/action_messageList_to_chat"
+            app:destination="@id/chatFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.example.healthcareapppd.presentation.ui.chat.ChatFragment"
+        android:label="Chat"
+        tools:layout="@layout/fragment_chat" />
+
 
 </navigation>

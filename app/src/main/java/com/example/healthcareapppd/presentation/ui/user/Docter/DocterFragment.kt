@@ -1,4 +1,4 @@
-package com.example.healthcareapppd.presentation.ui.Docter
+package com.example.healthcareapppd.presentation.ui.user.Docter
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,7 +12,6 @@ import android.widget.ImageView
 import androidx.navigation.fragment.findNavController
 import com.example.healthcareapppd.R
 import com.example.healthcareapppd.domain.usecase.DoctorUsecase
-import com.example.healthcareapppd.presentation.ui.Docter.placeholder.PlaceholderContent
 
 class DocterFragment : Fragment() {
 
