@@ -1,4 +1,4 @@
-package com.example.healthcareapppd.presentation.ui.Docter.placeholder
+package com.example.healthcareapppd.presentation.ui.user.Docter.placeholder
 
 import java.util.ArrayList
 import java.util.HashMap

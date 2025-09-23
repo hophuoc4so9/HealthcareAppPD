@@ -6,7 +6,7 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:background="#F5F5F5"
-tools:context="com.example.healthcareapppd.presentation.ui.Docter.DocterFragment">
+tools:context="com.example.healthcareapppd.presentation.ui.user.Docter.DocterFragment">
 
 <ImageView
     android:id="@+id/iv_back_arrow"

@@ -1,4 +1,4 @@
-package com.example.healthcareapppd.presentation.ui.Docter
+package com.example.healthcareapppd.presentation.ui.user.Docter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

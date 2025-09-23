@@ -1,4 +1,4 @@
-package com.example.healthcareapppd.presentation.ui.bmi
+package com.example.healthcareapppd.presentation.ui.user.bmi
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

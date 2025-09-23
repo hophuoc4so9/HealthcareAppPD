@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import com.example.healthcareapppd.AuthActivity
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import android.view.MotionEvent
 import androidx.core.content.ContextCompat
 import com.example.healthcareapppd.LoginActivity
 import com.example.healthcareapppd.R
@@ -126,7 +127,7 @@ class AuthFragment : Fragment() {
         var isPasswordVisible = false
 
         editText.setOnTouchListener { v, event ->
-            if (event.action == android.view.MotionEvent.ACTION_UP) {
+            if (event.action == MotionEvent.ACTION_UP) {
                 val drawableEnd = editText.compoundDrawables[2] // icon bên phải
                 if (drawableEnd != null &&
                     event.rawX >= (editText.right - drawableEnd.bounds.width() - editText.paddingEnd)
