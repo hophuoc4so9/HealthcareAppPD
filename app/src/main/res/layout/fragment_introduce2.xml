@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="30dp">
+    android:paddingBottom="35dp">
 
     <!-- Hình minh họa -->
     <ImageView
@@ -17,7 +17,7 @@
         app:layout_constraintBottom_toTopOf="@id/tvIntro2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:src="@drawable/doctor_2" />
+        app:srcCompat="@drawable/doctor_2" />
 
     <!-- Nội dung giới thiệu -->
     <TextView
@@ -27,7 +27,7 @@
         android:layout_marginTop="20dp"
         android:text="Theo dõi, quản lý các chỉ số cơ bản và nhận lời khuyên để sống khỏe hơn mỗi ngày."
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
