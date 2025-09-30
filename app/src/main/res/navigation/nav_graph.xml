@@ -89,5 +89,4 @@
         android:label="Chat"
         tools:layout="@layout/fragment_chat" />
 
-
 </navigation>
