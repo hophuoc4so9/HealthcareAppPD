@@ -24,10 +24,10 @@
         tools:layout="@layout/fragment_profile" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.healthcareapppd.presentation.ui.user.Notification.NotificationFragment"
+        android:id="@+id/navigation_notification"
+        android:name="com.example.healthcareapppd.presentation.ui.user.reminder.ReminderListFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notification" />
+        tools:layout="@layout/reminder_fragment_item_list" />
 
     <fragment
         android:id="@+id/navigation_reports"
