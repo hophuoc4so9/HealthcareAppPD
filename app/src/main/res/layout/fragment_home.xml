@@ -4,16 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white"
-    android:padding="16dp">
+    android:background="@color/white">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="180dp"
+        android:background="@drawable/hinhnen"
         android:padding="16dp">
 
         <ImageView
-            android:background="@color/teal_200"
             android:id="@+id/avatar"
             android:layout_width="48dp"
             android:layout_height="48dp"
@@ -23,7 +22,6 @@
             android:layout_alignParentStart="true"
             android:layout_marginTop="8dp" />
 
-        <!-- Text chào -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,8 +32,7 @@
 
             <TextView
                 android:text="@string/greeting"
-
-                android:textColor="@color/black"
+                android:textColor="@android:color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_height="wrap_content"
@@ -45,27 +42,22 @@
                 android:text="@string/name"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="@android:color/black"
                 android:textSize="16sp" />
-
-
         </LinearLayout>
 
+        <EditText
+            android:id="@+id/searchBox"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
+            android:autofillHints=""
+            android:drawableStart="@drawable/ic_search"
+            android:hint="@string/search_placeholder"
+            android:inputType="text"
+            android:padding="12dp" />
+
     </RelativeLayout>
-
-    <!-- Search box -->
-
-    <EditText
-        android:id="@+id/searchBox"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginTop="-24dp"
-        android:layout_marginBottom="16dp"
-        android:autofillHints=""
-        android:drawableStart="@drawable/ic_search"
-        android:hint="@string/search_placeholder"
-        android:inputType="text"
-        android:padding="12dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -73,7 +65,10 @@
         android:baselineAligned="false"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_marginBottom="16dp">
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp">
 
         <LinearLayout
             android:id="@+id/layout_doctor"
@@ -110,7 +105,8 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@drawable/ic_location_on_24"
-                app:tint="@color/royalblue" />
+                app:tint="@color/royalblue"
+                android:contentDescription="@string/hospital"/>
             <TextView
                 android:text="@string/hospital"
                 android:textSize="14sp"
@@ -120,7 +116,6 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Health Article Section -->
     <TextView
         android:text="@string/article"
         android:textSize="18sp"
@@ -128,12 +123,16 @@
         android:textColor="@color/text"
         android:layout_marginBottom="8dp"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"/>
+        android:layout_width="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerArticles"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"/>
 
 </LinearLayout>

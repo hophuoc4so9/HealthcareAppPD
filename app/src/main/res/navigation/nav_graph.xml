@@ -56,8 +56,23 @@
         <action
             android:id="@+id/action_docter_to_home"
             app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_docter_to_detail"
+            app:destination="@id/navigation_docter_detail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_docter_detail"
+        android:name="com.example.healthcareapppd.presentation.ui.user.Docter.DetailDocterFragment"
+        android:label="Doctor Detail"
+        tools:layout="@layout/fragment_detail_docter" >
+
+        <argument
+            android:name="doctor"
+            app:argType="java.io.Serializable" />
 
     </fragment>
+
     <fragment
         android:id="@+id/navigation_messageListFragment"
         android:name="com.example.healthcareapppd.presentation.ui.chat.MessageListFragment"

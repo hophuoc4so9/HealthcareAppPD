@@ -4,102 +4,102 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- AppBar -->
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/topAppBarAdd"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorSurface"
-        android:title="Thêm Báo thức"
-        app:navigationIcon="@drawable/baseline_lock_open_24"
-        app:menu="@menu/menu_add_alarm" />
+<!--    &lt;!&ndash; AppBar &ndash;&gt;-->
+<!--    <com.google.android.material.appbar.MaterialToolbar-->
+<!--        android:id="@+id/topAppBarAdd"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="?attr/actionBarSize"-->
+<!--        android:background="?attr/colorSurface"-->
+<!--        android:title="Thêm Báo thức"-->
+<!--        app:navigationIcon="@drawable/baseline_lock_open_24"-->
+<!--        app:menu="@menu/menu_add_alarm" />-->
 
-    <!-- Nội dung chính -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+<!--    &lt;!&ndash; Nội dung chính &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:orientation="vertical"-->
+<!--        android:padding="16dp"-->
+<!--        app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
 
-        <!-- TimePicker -->
-        <TimePicker
-            android:id="@+id/timePicker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:timePickerMode="spinner"
-            android:is24HourView="true"
-            android:layout_gravity="center" />
+<!--        &lt;!&ndash; TimePicker &ndash;&gt;-->
+<!--        <TimePicker-->
+<!--            android:id="@+id/timePicker"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:timePickerMode="spinner"-->
+<!--            android:is24HourView="true"-->
+<!--            android:layout_gravity="center" />-->
 
-        <!-- Danh sách tùy chọn -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp">
+<!--        &lt;!&ndash; Danh sách tùy chọn &ndash;&gt;-->
+<!--        <com.google.android.material.card.MaterialCardView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="24dp"-->
+<!--            app:cardCornerRadius="12dp"-->
+<!--            app:cardElevation="2dp">-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="vertical">-->
 
-                <!-- Lặp lại -->
-                <LinearLayout
-                    android:id="@+id/itemRepeat"
-                    style="@style/AlarmSettingItem">
-                    <TextView
-                        style="@style/AlarmSettingLabel"
-                        android:text="Lặp lại" />
-                    <TextView
-                        android:id="@+id/tvRepeat"
-                        style="@style/AlarmSettingValue"
-                        android:text="Không" />
-                </LinearLayout>
+<!--                &lt;!&ndash; Lặp lại &ndash;&gt;-->
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/itemRepeat"-->
+<!--                    style="@style/AlarmSettingItem">-->
+<!--                    <TextView-->
+<!--                        style="@style/AlarmSettingLabel"-->
+<!--                        android:text="Lặp lại" />-->
+<!--                    <TextView-->
+<!--                        android:id="@+id/tvRepeat"-->
+<!--                        style="@style/AlarmSettingValue"-->
+<!--                        android:text="Không" />-->
+<!--                </LinearLayout>-->
 
-                <!-- Nhãn -->
-                <LinearLayout
-                    android:id="@+id/itemLabel"
-                    style="@style/AlarmSettingItem">
-                    <TextView
-                        style="@style/AlarmSettingLabel"
-                        android:text="Nhãn" />
-                    <TextView
-                        android:id="@+id/tvLabel"
-                        style="@style/AlarmSettingValue"
-                        android:text="Báo thức" />
-                </LinearLayout>
+<!--                &lt;!&ndash; Nhãn &ndash;&gt;-->
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/itemLabel"-->
+<!--                    style="@style/AlarmSettingItem">-->
+<!--                    <TextView-->
+<!--                        style="@style/AlarmSettingLabel"-->
+<!--                        android:text="Nhãn" />-->
+<!--                    <TextView-->
+<!--                        android:id="@+id/tvLabel"-->
+<!--                        style="@style/AlarmSettingValue"-->
+<!--                        android:text="Báo thức" />-->
+<!--                </LinearLayout>-->
 
-                <!-- Âm thanh -->
-                <LinearLayout
-                    android:id="@+id/itemRingtone"
-                    style="@style/AlarmSettingItem">
-                    <TextView
-                        style="@style/AlarmSettingLabel"
-                        android:text="Âm thanh" />
-                    <TextView
-                        android:id="@+id/tvRingtone"
-                        style="@style/AlarmSettingValue"
-                        android:text="Mặc định" />
-                </LinearLayout>
+<!--                &lt;!&ndash; Âm thanh &ndash;&gt;-->
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/itemRingtone"-->
+<!--                    style="@style/AlarmSettingItem">-->
+<!--                    <TextView-->
+<!--                        style="@style/AlarmSettingLabel"-->
+<!--                        android:text="Âm thanh" />-->
+<!--                    <TextView-->
+<!--                        android:id="@+id/tvRingtone"-->
+<!--                        style="@style/AlarmSettingValue"-->
+<!--                        android:text="Mặc định" />-->
+<!--                </LinearLayout>-->
 
-                <!-- Báo lại -->
-                <LinearLayout
-                    android:id="@+id/itemSnooze"
-                    style="@style/AlarmSettingItem">
-                    <TextView
-                        style="@style/AlarmSettingLabel"
-                        android:text="Báo lại" />
-                    <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/switchSnooze"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checked="true" />
-                </LinearLayout>
+<!--                &lt;!&ndash; Báo lại &ndash;&gt;-->
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/itemSnooze"-->
+<!--                    style="@style/AlarmSettingItem">-->
+<!--                    <TextView-->
+<!--                        style="@style/AlarmSettingLabel"-->
+<!--                        android:text="Báo lại" />-->
+<!--                    <com.google.android.material.switchmaterial.SwitchMaterial-->
+<!--                        android:id="@+id/switchSnooze"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:checked="true" />-->
+<!--                </LinearLayout>-->
 
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+<!--            </LinearLayout>-->
+<!--        </com.google.android.material.card.MaterialCardView>-->
 
-    </LinearLayout>
+<!--    </LinearLayout>-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

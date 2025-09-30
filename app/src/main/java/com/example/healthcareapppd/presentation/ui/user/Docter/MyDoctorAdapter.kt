@@ -1,41 +1,55 @@
+// File: com/example/healthcareapppd/presentation/ui/user/Docter/MyDoctorAdapter.kt
 package com.example.healthcareapppd.presentation.ui.user.Docter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.healthcareapppd.databinding.DocterFragmentItemBinding
+import com.example.healthcareapppd.R
 import com.example.healthcareapppd.domain.usecase.DoctorUsecase
 
 class MyDoctorAdapter(
-    private val doctorList: List<DoctorUsecase>
-) : RecyclerView.Adapter<MyDoctorAdapter.DoctorViewHolder>() {
+    private val doctors: List<DoctorUsecase>,
+    private val onDoctorClicked: (DoctorUsecase) -> Unit // Callback để Fragment xử lý
+) : RecyclerView.Adapter<MyDoctorAdapter.ViewHolder>() {
 
-    inner class DoctorViewHolder(binding: DocterFragmentItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        val doctorImage: ImageView = binding.ivDoctorPhoto
-        val doctorName: TextView = binding.tvDoctorName
-        val doctorSpecialty: TextView = binding.tvDoctorSpeciality
-        val doctorRating: TextView = binding.tvDoctorRating
-        val doctorDistance: TextView = binding.tvDoctorDistance
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.docter_fragment_item, parent, false)
+        return ViewHolder(view)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DoctorViewHolder {
-        val binding = DocterFragmentItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return DoctorViewHolder(binding)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val doctor = doctors[position]
+        holder.bind(doctor)
     }
 
-    override fun onBindViewHolder(holder: DoctorViewHolder, position: Int) {
-        val currentDoctor = doctorList[position]
+    override fun getItemCount(): Int = doctors.size
 
-        holder.doctorImage.setImageResource(currentDoctor.image)
-        holder.doctorName.text = currentDoctor.name
-        holder.doctorSpecialty.text = currentDoctor.specialty
-        holder.doctorRating.text = currentDoctor.rating.toString()
-        holder.doctorDistance.text = currentDoctor.distance
-    }
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val photo: ImageView = itemView.findViewById(R.id.iv_doctor_photo)
+        private val name: TextView = itemView.findViewById(R.id.tv_doctor_name)
+        private val speciality: TextView = itemView.findViewById(R.id.tv_doctor_speciality)
+        private val rating: TextView = itemView.findViewById(R.id.tv_doctor_rating)
+        private val distance: TextView = itemView.findViewById(R.id.tv_doctor_distance)
 
-    override fun getItemCount(): Int {
-        return doctorList.size
+        init {
+            itemView.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    onDoctorClicked(doctors[position])
+                }
+            }
+        }
+
+        fun bind(doctor: DoctorUsecase) {
+            photo.setImageResource(doctor.photo)
+            name.text = doctor.name
+            speciality.text = doctor.speciality
+            rating.text = doctor.rating.toString()
+            distance.text = doctor.distance
+        }
     }
 }
