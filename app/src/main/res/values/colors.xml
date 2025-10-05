@@ -9,6 +9,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#407BFF</color>
+    <color name="background">#F5F5F5</color>
+    <color name="divider">#E0E0E0</color>
+    <color name="error">#F44336</color>
     <!-- Màu chữ & nền -->
     <color name="text">#221F1F</color>
     <color name="darker_gray">#AAAAAA</color>

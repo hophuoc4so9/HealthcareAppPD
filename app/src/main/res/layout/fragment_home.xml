@@ -96,6 +96,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/layout_map"
             android:orientation="vertical"
             android:gravity="center"
             android:layout_width="0dp"

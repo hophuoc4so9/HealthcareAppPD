@@ -29,11 +29,30 @@ class ChatSessionAdapter(
         private val tvName: TextView = itemView.findViewById(R.id.tvName)
         private val tvLastMessage: TextView = itemView.findViewById(R.id.tvLastMessage)
         private val tvStatus: TextView = itemView.findViewById(R.id.tvStatus)
+        private val tvTime: TextView = itemView.findViewById(R.id.tvTime)
+        private val vOnlineStatus: View = itemView.findViewById(R.id.vOnlineStatus)
+        private val tvUnreadCount: TextView = itemView.findViewById(R.id.tvUnreadCount)
 
         fun bind(session: ChatSession, onClick: (ChatSession) -> Unit) {
             tvName.text = session.name
             tvLastMessage.text = session.lastMessage
-            tvStatus.text = if (session.isOngoing) "Đang tiếp diễn" else "Đã đóng"
+            tvTime.text = "10:30" // Có thể thêm thời gian thật từ data
+
+            // Hiển thị trạng thái
+            if (session.isOngoing) {
+                tvStatus.text = "Đang hoạt động"
+                tvStatus.setTextColor(itemView.context.getColor(android.R.color.holo_green_dark))
+                vOnlineStatus.visibility = View.VISIBLE
+
+                // Hiển thị badge tin nhắn chưa đọc (demo)
+                tvUnreadCount.visibility = View.VISIBLE
+                tvUnreadCount.text = "2"
+            } else {
+                tvStatus.text = "Đã đóng"
+                tvStatus.setTextColor(itemView.context.getColor(android.R.color.darker_gray))
+                vOnlineStatus.visibility = View.GONE
+                tvUnreadCount.visibility = View.GONE
+            }
 
             itemView.setOnClickListener { onClick(session) }
         }

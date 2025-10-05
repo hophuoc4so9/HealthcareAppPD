@@ -2,19 +2,41 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#F5F5F5">
 
-    <TextView
+    <!-- Header -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Danh sách tin nhắn"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:padding="16dp"/>
+        android:background="#4CAF50"
+        android:elevation="4dp"
+        android:orientation="vertical"
+        android:padding="16dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tin nhắn"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Cuộc trò chuyện với bác sĩ"
+            android:textColor="#E8F5E9"
+            android:textSize="14sp"/>
+    </LinearLayout>
+
+    <!-- Danh sách cuộc trò chuyện -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSessions"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="8dp"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"/>
+
 </LinearLayout>

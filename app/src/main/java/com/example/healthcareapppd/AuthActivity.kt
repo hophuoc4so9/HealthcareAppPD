@@ -3,7 +3,7 @@ package com.example.healthcareapppd
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.healthcareapppd.presentation.ui.Auth.AuthFragment
+import com.example.healthcareapppd.presentation.ui.auth.AuthFragment
 
 class AuthActivity : AppCompatActivity() {
 

@@ -1,60 +1,65 @@
-package com.example.healthcareapppd.presentation.ui.user.Profile
+package com.example.healthcareapppd.presentation.ui.user
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.example.healthcareapppd.R
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ProfileFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ProfileFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private lateinit var tvUserName: TextView
+    private lateinit var tvUserEmail: TextView
+    private lateinit var menuSchedule: LinearLayout
+    private lateinit var menuFaq: LinearLayout
+    private lateinit var menuLogout: LinearLayout
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_profile, container, false)
+        initViews(view)
+        setupClickListeners()
+        loadUserData()
+        return view
+    }
+
+    private fun initViews(view: View) {
+        tvUserName = view.findViewById(R.id.tvUserName)
+        tvUserEmail = view.findViewById(R.id.tvUserEmail)
+        menuSchedule = view.findViewById(R.id.menuSchedule)
+        menuFaq = view.findViewById(R.id.menuFaq)
+        menuLogout = view.findViewById(R.id.menuLogout)
+    }
+
+    private fun setupClickListeners() {
+        menuSchedule.setOnClickListener {
+            Toast.makeText(requireContext(), "Mở màn hình xem lịch khám", Toast.LENGTH_SHORT).show()
+        }
+
+        menuFaq.setOnClickListener {
+            Toast.makeText(requireContext(), "Mở màn hình FAQ", Toast.LENGTH_SHORT).show()
+        }
+
+        // Click vào Logout
+        menuLogout.setOnClickListener {
+            Toast.makeText(requireContext(), "Đăng xuất thành công", Toast.LENGTH_SHORT).show()
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+    private fun loadUserData() {
+        tvUserName.text = "Nguyễn Văn A"
+        tvUserEmail.text = "nguyenvana@email.com"
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ProfileFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ProfileFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance() = ProfileFragment()
     }
 }

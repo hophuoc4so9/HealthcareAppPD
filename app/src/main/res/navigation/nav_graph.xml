@@ -7,19 +7,22 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.healthcareapppd.presentation.ui.user.Home.HomeFragment"
+        android:name="HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" >
 
         <action
             android:id="@+id/action_home_to_docter"
             app:destination="@id/navigation_docter" />
+        <action
+            android:id="@+id/action_home_to_map"
+            app:destination="@id/navigation_map" />
 
     </fragment>
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.example.healthcareapppd.presentation.ui.user.Profile.ProfileFragment"
+        android:name="com.example.healthcareapppd.presentation.ui.user.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
 
@@ -61,6 +64,8 @@
             app:destination="@id/navigation_docter_detail" />
     </fragment>
 
+
+
     <fragment
         android:id="@+id/navigation_docter_detail"
         android:name="com.example.healthcareapppd.presentation.ui.user.Docter.DetailDocterFragment"
@@ -72,6 +77,7 @@
             app:argType="java.io.Serializable" />
 
     </fragment>
+
 
     <fragment
         android:id="@+id/navigation_messageListFragment"
@@ -88,5 +94,11 @@
         android:name="com.example.healthcareapppd.presentation.ui.chat.ChatFragment"
         android:label="Chat"
         tools:layout="@layout/fragment_chat" />
+
+    <fragment
+        android:id="@+id/navigation_map"
+        android:name="com.example.healthcareapppd.presentation.ui.map.MapFragment"
+        android:label="Map"
+        tools:layout="@layout/fragment_map" />
 
 </navigation>

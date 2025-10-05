@@ -10,54 +10,118 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/ivAvatar"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+        <!-- Avatar dùng CardView để tránh lỗi ShapeableImageView -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardAvatar"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:contentDescription="Avatar"
-            android:src="@drawable/ic_profile" />
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            app:cardCornerRadius="28dp"
+            app:cardElevation="0dp">
+
+            <ImageView
+                android:id="@+id/ivAvatar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_profile"
+                android:scaleType="centerCrop"/>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Badge trạng thái online -->
+        <View
+            android:id="@+id/vOnlineStatus"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_alignEnd="@id/cardAvatar"
+            android:layout_alignBottom="@id/cardAvatar"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="2dp"
+            android:background="@drawable/bg_online_indicator"
+            android:visibility="gone"/>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="16dp"
-            android:layout_toEndOf="@id/ivAvatar"
+            android:layout_marginEnd="8dp"
+            android:layout_toEndOf="@id/cardAvatar"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tên bác sĩ"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tvName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:text="Tên bác sĩ"
+                    android:textColor="#212121"
+                    android:textSize="17sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tvTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="10:30"
+                    android:textColor="#757575"
+                    android:textSize="12sp"/>
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/tvLastMessage"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:text="Tin nhắn cuối..."
-                android:textColor="@android:color/darker_gray"
-                android:textSize="14sp" />
+                android:textColor="#757575"
+                android:textSize="14sp"
+                android:maxLines="2"
+                android:ellipsize="end"/>
 
-            <TextView
-                android:id="@+id/tvStatus"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Đang tiếp diễn"
-                android:textColor="@android:color/holo_green_dark"
-                android:textSize="12sp" />
-        </LinearLayout>
+                android:layout_marginTop="6dp"
+                android:orientation="horizontal">
 
+                <TextView
+                    android:id="@+id/tvStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đang hoạt động"
+                    android:textColor="#4CAF50"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:drawableStart="@android:drawable/presence_online"
+                    android:drawablePadding="4dp"/>
+
+                <!-- Badge số tin nhắn chưa đọc -->
+                <TextView
+                    android:id="@+id/tvUnreadCount"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_unread_badge"
+                    android:gravity="center"
+                    android:text="3"
+                    android:textColor="@android:color/white"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"/>
+            </LinearLayout>
+        </LinearLayout>
     </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#E0E0E0" />
+        android:background="#E0E0E0"/>
 
 </LinearLayout>

@@ -1,6 +1,5 @@
-package com.example.healthcareapppd.presentation.ui.Auth
+package com.example.healthcareapppd.presentation.ui.auth
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns

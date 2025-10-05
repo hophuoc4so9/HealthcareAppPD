@@ -41,15 +41,18 @@
 
 
         <!-- Danh sách bác sĩ -->
+
+        <!-- Thông tin chi tiết bác sĩ -->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#F5F5F5"
             android:orientation="vertical">
+
             <include layout="@layout/docter_fragment_item" />
         </LinearLayout>
 
-        <!-- Thông tin chi tiết bác sĩ -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

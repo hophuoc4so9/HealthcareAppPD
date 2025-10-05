@@ -1,187 +1,426 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:background="@color/background_light"
+    android:background="#F5F7FA"
     tools:context=".presentation.ui.user.Report.ReportFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="20dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/health_record"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:layout_marginBottom="16dp"/>
-
+        <!-- Header -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="2"
-            android:layout_marginBottom="12dp">
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
 
-            <com.google.android.material.card.MaterialCardView
+            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="120dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginEnd="8dp"
-                app:cardCornerRadius="12dp"
-                app:cardBackgroundColor="@color/skyblue">
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hồ sơ sức khỏe"
+                    android:textSize="26sp"
+                    android:textStyle="bold"
+                    android:textColor="#1A1A1A"/>
+
+                <TextView
+                    android:id="@+id/txtCurrentDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="05 Tháng 10, 2025"
+                    android:textSize="14sp"
+                    android:textColor="#9E9E9E"
+                    android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="8dp"
+                android:src="@android:drawable/ic_menu_today"
+                android:background="@android:drawable/dialog_holo_light_frame"
+                app:tint="#6C63FF"/>
+        </LinearLayout>
+
+        <!-- Nhịp tim -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="20dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="12dp"
+            android:gravity="center_vertical"
+            android:background="@drawable/bg_card_heart">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="12dp">
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@android:drawable/ic_menu_compass"
+                        app:tint="#FFFFFF"
+                        android:alpha="0.9"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/Heart_rate"
-                        android:textSize="14sp"
-                        android:textColor="@color/black"/>
+                        android:text="Nhịp tim"
+                        android:textSize="15sp"
+                        android:textColor="#FFFFFF"
+                        android:layout_marginStart="8dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp"
+                    >
 
                     <TextView
                         android:id="@+id/txtHeartRate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="97 bpm"
-                        android:textSize="22sp"
+                        android:text="97"
+                        android:textSize="40sp"
                         android:textStyle="bold"
-                        android:textColor="@color/black"/>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="0dp"
-                android:layout_height="120dp"
-                android:layout_weight="1"
-                android:layout_marginStart="8dp"
-                app:cardCornerRadius="12dp"
-                app:cardBackgroundColor="@color/royalblue">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="12dp">
+                        android:textColor="#FFFFFF"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/Steps"
-                        android:textSize="14sp"
-                        android:textColor="@color/black"/>
+                        android:text=" bpm"
+                        android:textSize="16sp"
+                        android:textColor="#FFFFFF"
+                        android:layout_marginStart="4dp"/>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bình thường"
+                    android:textSize="13sp"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@android:drawable/ic_menu_compass"
+                app:tint="#FFFFFF"
+                android:alpha="0.2"/>
+        </LinearLayout>
+
+        <!-- Bước chân -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="20dp"
+            android:layout_marginBottom="12dp"
+            android:gravity="center_vertical"
+            android:background="@drawable/bg_card_steps">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@android:drawable/ic_menu_mylocation"
+                        app:tint="#FFFFFF"
+                        android:alpha="0.9"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bước chân"
+                        android:textSize="15sp"
+                        android:textColor="#FFFFFF"
+                        android:layout_marginStart="8dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp"
+                    >
 
                     <TextView
                         android:id="@+id/txtSteps"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="12,540"
-                        android:textSize="22sp"
+                        android:textSize="40sp"
                         android:textStyle="bold"
-                        android:textColor="@color/black"/>
+                        android:textColor="#FFFFFF"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" bước"
+                        android:textSize="16sp"
+                        android:textColor="#FFFFFF"
+                        android:layout_marginStart="4dp"/>
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mục tiêu: 10,000"
+                    android:textSize="13sp"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@android:drawable/ic_menu_mylocation"
+                app:tint="#FFFFFF"
+                android:alpha="0.2"/>
         </LinearLayout>
 
+        <!-- Calories -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="2"
-            android:layout_marginBottom="4dp">
+            android:padding="20dp"
+            android:layout_marginBottom="12dp"
+            android:gravity="center_vertical"
+            android:background="@drawable/bg_card_calories">
 
-            <com.google.android.material.card.MaterialCardView
+            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="120dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginEnd="8dp"
-                app:cardCornerRadius="12dp"
-                app:cardBackgroundColor="@color/orange">
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="12dp">
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@android:drawable/ic_menu_rotate"
+                        app:tint="#FFFFFF"
+                        android:alpha="0.9"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Calories"
-                        android:textSize="14sp"
-                        android:textColor="@color/black"/>
+                        android:textSize="15sp"
+                        android:textColor="#FFFFFF"
+                        android:layout_marginStart="8dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp"
+                    >
 
                     <TextView
                         android:id="@+id/txtCalories"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="756 kcal"
-                        android:textSize="22sp"
+                        android:text="756"
+                        android:textSize="40sp"
                         android:textStyle="bold"
-                        android:textColor="@color/black"/>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="0dp"
-                android:layout_height="120dp"
-                android:layout_weight="1"
-                android:layout_marginStart="8dp"
-                app:cardCornerRadius="12dp"
-                app:cardBackgroundColor="@color/teal_700">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="12dp">
+                        android:textColor="#FFFFFF"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/Sleeping_time"
-                        android:textSize="14sp"
-                        android:textColor="@color/black"/>
-
-                    <TextView
-                        android:id="@+id/txtSleep"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="7h 45m"
-                        android:textSize="22sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"/>
+                        android:text=" kcal"
+                        android:textSize="16sp"
+                        android:textColor="#FFFFFF"
+                        android:layout_marginStart="4dp"/>
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đã đốt cháy hôm nay"
+                    android:textSize="13sp"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@android:drawable/ic_menu_rotate"
+                app:tint="#FFFFFF"
+                android:alpha="0.2"/>
         </LinearLayout>
 
-        <com.google.android.material.button.MaterialButton
+        <!-- Giấc ngủ -->
+
+        <!-- Nút tính BMI -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_card_sleep"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="20dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:alpha="0.9"
+                        android:src="@android:drawable/ic_lock_idle_alarm"
+                        app:tint="#FFFFFF" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="Giấc ngủ"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/txtSleep"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="7h 45m"
+                    android:textColor="#FFFFFF"
+                    android:textSize="40sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Chất lượng tốt"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:alpha="0.2"
+                android:src="@android:drawable/ic_lock_idle_alarm"
+                app:tint="#FFFFFF" />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/btnCalculateBmi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tính chỉ số BMI"
-            android:layout_marginTop="24dp" />
+            android:orientation="horizontal"
+            android:padding="18dp"
+            android:gravity="center"
+            android:background="@drawable/bg_card_bmi"
+            android:layout_marginBottom="16dp">
 
-        <TextView
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@android:drawable/ic_menu_add"
+                app:tint="#FFFFFF"
+                android:layout_marginEnd="12dp"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Tính chỉ số BMI"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@android:drawable/ic_media_play"
+                app:tint="#FFFFFF"/>
+        </LinearLayout>
+
+        <!-- Nút xem chi tiết -->
+        <LinearLayout
             android:id="@+id/btnViewAll"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:paddingTop="8dp"
-            android:text="Xem tất cả"
-            android:textColor="@color/royalblue"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="12dp"
+            android:background="?attr/selectableItemBackground">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Xem chi tiết"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#6C63FF"
+                android:layout_marginEnd="4dp"/>
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@android:drawable/ic_media_ff"
+                app:tint="#6C63FF"/>
+        </LinearLayout>
+
     </LinearLayout>
 </ScrollView>

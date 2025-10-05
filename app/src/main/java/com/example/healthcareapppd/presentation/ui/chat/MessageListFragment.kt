@@ -27,11 +27,15 @@ class MessageListFragment : Fragment() {
         recyclerView = view.findViewById(R.id.rvSessions)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        // Dữ liệu demo
-        sessions.add(ChatSession("1", "Bác sĩ A", "Hẹn gặp lại bạn nhé!", false))
-        sessions.add(ChatSession("2", "Bác sĩ B", "Bạn nhớ uống thuốc đúng giờ", true))
-        sessions.add(ChatSession("3", "Bác sĩ C", "Bạn cần tái khám sau 2 tuần", false))
-        sessions.add(ChatSession("4", "Bác sĩ D", "Chào bạn, bạn cần hỗ trợ gì?", true))
+        if (sessions.isEmpty())
+        {
+            // Dữ liệu demo
+            sessions.add(ChatSession("1", "Bác sĩ A", "Hẹn gặp lại bạn nhé!", false))
+            sessions.add(ChatSession("2", "Bác sĩ B", "Bạn nhớ uống thuốc đúng giờ", true))
+            sessions.add(ChatSession("3", "Bác sĩ C", "Bạn cần tái khám sau 2 tuần", false))
+            sessions.add(ChatSession("4", "Bác sĩ D", "Chào bạn, bạn cần hỗ trợ gì?", true))
+
+        }
 
         adapter = ChatSessionAdapter(sessions) { session ->
             if (session.isOngoing) {
