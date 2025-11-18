@@ -34,7 +34,7 @@
                 android:textStyle="bold"
                 android:textColor="@android:color/black" />
 
-            <!-- Nhãn (vd: Uống thuốc, Đi ngủ) -->
+            <!-- Nhãn -->
             <TextView
                 android:id="@+id/tvLabel"
                 android:layout_width="wrap_content"

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context=".presentation.ui.user.Docter.DetailDocterFragment">
 
     <LinearLayout
@@ -46,7 +47,9 @@
             android:layout_height="wrap_content"
             android:background="#F5F5F5"
             android:orientation="vertical">
-            <include layout="@layout/docter_fragment_item" />
+            <include
+                android:id="@+id/doctorSumary"
+                layout="@layout/docter_fragment_item" />
         </LinearLayout>
 
         <!-- Thông tin chi tiết bác sĩ -->
@@ -84,6 +87,77 @@
                 android:layout_marginTop="8dp"
                 android:text="Xem thêm" />
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@android:color/white"
+            android:padding="16dp"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Đặt lịch hẹn"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="12dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_date_picker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="6"
+                tools:listitem="@layout/item_date_slot"
+                android:clipToPadding="false"
+                android:paddingStart="0dp"
+                android:paddingEnd="16dp"/>
+
+
+            <!-- Chọn Giờ -->
+            <LinearLayout
+                android:id="@+id/ll_time_slots_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                tools:background="#EEE"
+                android:gravity="center"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Các khung giờ sẽ được tải khi chọn ngày"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="14sp"/>
+
+            </LinearLayout>
+
+            <!-- Nút Đặt lịch -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnBook"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginTop="40dp"
+                android:text="Đặt lịch hẹn"
+                android:textSize="20sp"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                app:cornerRadius="40dp"
+                app:layout_constraintTop_toBottomOf="@id/layoutCheck"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="32dp" />
 
     </LinearLayout>
 </ScrollView>

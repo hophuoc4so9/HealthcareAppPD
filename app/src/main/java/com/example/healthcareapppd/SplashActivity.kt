@@ -19,5 +19,6 @@ class SplashActivity : AppCompatActivity() {
             startActivity(intent)
             finish() // đóng splash để không quay lại bằng nút back
         }, 3000) // 3000ms = 3s
+
     }
 }

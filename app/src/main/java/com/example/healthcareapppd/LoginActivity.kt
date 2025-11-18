@@ -1,8 +1,8 @@
 package com.example.healthcareapppd
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.healthcareapppd.presentation.ui.Auth.AuthFragment
 import com.example.healthcareapppd.presentation.ui.LoginFragment
 
 class LoginActivity : AppCompatActivity() {
@@ -16,9 +16,10 @@ class LoginActivity : AppCompatActivity() {
             .commit()
     }
 
-    // Hàm này sẽ được gọi từ AuthFragment khi login thành công
-    fun navigateToMain() {
-        startActivity(Intent(this, MainActivity::class.java))
-        finish() // Đóng AuthActivity, không cho quay lại
+    fun navigateToAuth() {
+        supportFragmentManager.beginTransaction()
+            .replace(android.R.id.content, AuthFragment())
+            .addToBackStack(null)
+            .commit()
     }
 }

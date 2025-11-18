@@ -1,11 +1,17 @@
 package com.example.healthcareapppd.presentation.ui.user.Profile
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.Toast
+import com.example.healthcareapppd.LoginActivity
+import com.example.healthcareapppd.MainActivity
 import com.example.healthcareapppd.R
+import com.example.healthcareapppd.data.SessionManager
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -22,6 +28,8 @@ class ProfileFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private lateinit var menuLogout: LinearLayout
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -34,8 +42,22 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        val view = inflater.inflate(R.layout.fragment_profile, container, false)
+
+        menuLogout = view.findViewById(R.id.menuLogout)
+
+        // Xử lý sự kiện khi nhấn Logout
+        menuLogout.setOnClickListener {
+            SessionManager.clearSession(requireContext())
+
+            Toast.makeText(requireContext(), "Đăng xuất thành công!", Toast.LENGTH_SHORT).show()
+
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
+
+        return view
     }
 
     companion object {

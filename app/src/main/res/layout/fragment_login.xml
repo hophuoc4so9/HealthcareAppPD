@@ -21,22 +21,22 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutPhone"
+        android:id="@+id/layoutEmail"
         style="@style/RoundedTextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:hint="@string/phone"
-        app:startIconDrawable="@drawable/baseline_phone_24"
+        android:hint="@string/email"
+        app:startIconDrawable="@drawable/baseline_email_24"
         app:layout_constraintTop_toBottomOf="@id/tvTitle"
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edtPhone"
+            android:id="@+id/edtEmail"
             style="@style/RoundedTextInputEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="phone" />
+            android:inputType="textEmailAddress" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -48,7 +48,7 @@
         android:hint="@string/password"
         app:startIconDrawable="@drawable/baseline_lock_24"
         app:endIconMode="password_toggle"
-        app:layout_constraintTop_toBottomOf="@id/layoutPhone"
+        app:layout_constraintTop_toBottomOf="@id/layoutEmail"
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText

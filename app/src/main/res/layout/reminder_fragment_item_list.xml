@@ -8,31 +8,18 @@
     android:background="#F5F5F5"
     tools:context="com.example.healthcareapppd.presentation.ui.user.reminder.ReminderListFragment">
 
-    <!-- Thanh tiêu đề (AppBar "giả") -->
-    <ImageView
-        android:id="@+id/iv_back"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:padding="8dp"
-        android:src="@drawable/ic_arrow_left"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_margin="8dp" />
-
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_margin="24dp"
         android:text="Danh sách nhắc hẹn"
         android:textColor="@android:color/black"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Danh sách Reminder -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_reminders"
         android:layout_width="0dp"
@@ -45,6 +32,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_title"
+        app:layout_constraintBottom_toTopOf="@id/fab_add"
         tools:listitem="@layout/reminder_fragment_item"
         tools:itemCount="5"/>
 
@@ -60,16 +48,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="24dp"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="Sửa nhắc hẹn"
-        app:srcCompat="@drawable/baseline_edit_24"
-        app:backgroundTint="@color/primary_blue"
-        app:tint="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="24dp"/>
+<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--        android:id="@+id/fab_edit"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:contentDescription="Sửa nhắc hẹn"-->
+<!--        app:srcCompat="@drawable/baseline_edit_24"-->
+<!--        app:backgroundTint="@color/primary_blue"-->
+<!--        app:tint="@android:color/white"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        android:layout_margin="24dp"/>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

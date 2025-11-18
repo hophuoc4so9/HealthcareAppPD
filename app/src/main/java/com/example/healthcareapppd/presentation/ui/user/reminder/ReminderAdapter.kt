@@ -3,29 +3,28 @@ package com.example.healthcareapppd.presentation.ui.reminder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CompoundButton
-import android.widget.Switch
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.healthcareapppd.R
+import com.example.healthcareapppd.data.local.ReminderEntity
 import com.google.android.material.switchmaterial.SwitchMaterial
-
-data class Reminder(
-    val time: String,     // "07:00"
-    val label: String,    // "Uống thuốc"
-    var isActive: Boolean // true/false
-)
 
 
 class ReminderAdapter(
-    private val reminders: MutableList<Reminder>
-) : RecyclerView.Adapter<ReminderAdapter.ReminderViewHolder>() {
+    // Thêm callback để Fragment/ViewModel xử lý việc cập nhật DB
+    private val onSwitchToggle: (ReminderEntity, Boolean) -> Unit,
+    private val onItemClick: (ReminderEntity) -> Unit
+) : ListAdapter<ReminderEntity, ReminderAdapter.ReminderViewHolder>(ReminderDiffCallback()) {
+// Adapter nhận vào ReminderEntity
 
     inner class ReminderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvTime: TextView = itemView.findViewById(R.id.tvTime)
         val tvLabel: TextView = itemView.findViewById(R.id.tvLabel)
         val switchActive: SwitchMaterial = itemView.findViewById(R.id.switchActive)
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReminderViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -34,24 +33,30 @@ class ReminderAdapter(
     }
 
     override fun onBindViewHolder(holder: ReminderViewHolder, position: Int) {
-        val reminder = reminders[position]
+        val reminder = getItem(position)
         holder.tvTime.text = reminder.time
         holder.tvLabel.text = reminder.label
-        holder.switchActive.isChecked = reminder.isActive
 
-        // Cập nhật trạng thái khi bật/tắt Switch
         holder.switchActive.setOnCheckedChangeListener(null)
         holder.switchActive.isChecked = reminder.isActive
+
+        // Sử dụng Callback để thông báo cho ViewModel
         holder.switchActive.setOnCheckedChangeListener { _, isChecked ->
-            reminder.isActive = isChecked
+            onSwitchToggle(reminder, isChecked)
+        }
+
+        holder.itemView.setOnClickListener {
+            onItemClick(reminder)
         }
     }
+}
 
-    override fun getItemCount(): Int = reminders.size
+class ReminderDiffCallback : DiffUtil.ItemCallback<ReminderEntity>() {
+    override fun areItemsTheSame(oldItem: ReminderEntity, newItem: ReminderEntity): Boolean {
+        return oldItem.id == newItem.id
+    }
 
-    // Hàm thêm nhắc nhở mới
-    fun addReminder(reminder: Reminder) {
-        reminders.add(reminder)
-        notifyItemInserted(reminders.size - 1)
+    override fun areContentsTheSame(oldItem: ReminderEntity, newItem: ReminderEntity): Boolean {
+        return oldItem == newItem
     }
 }

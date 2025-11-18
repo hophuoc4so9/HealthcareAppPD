@@ -27,7 +27,28 @@
         android:id="@+id/navigation_notification"
         android:name="com.example.healthcareapppd.presentation.ui.user.reminder.ReminderListFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/reminder_fragment_item_list" />
+        tools:layout="@layout/reminder_fragment_item_list">
+        <action
+            android:id="@+id/action_reminderAddFragment"
+            app:destination="@id/reminderAddFragment" />
+        <action
+            android:id="@+id/action_reminderEditFragment"
+            app:destination="@id/reminderEditFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/reminderAddFragment"
+        android:name="com.example.healthcareapppd.presentation.ui.user.reminder.AddReminderFragment"
+        android:label="Thêm nhắc hẹn" />
+
+    <fragment
+        android:id="@+id/reminderEditFragment"
+        android:name="com.example.healthcareapppd.presentation.ui.user.reminder.EditReminderFragment"
+        android:label="Sửa nhắc hẹn">
+        <argument
+            android:name="reminder"
+            app:argType="com.example.healthcareapppd.data.local.ReminderEntity" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_reports"

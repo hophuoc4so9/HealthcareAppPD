@@ -33,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="Thêm Nhắc Hẹn"
+                android:text="Sửa Nhắc Hẹn"
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -43,11 +43,11 @@
                 app:layout_constraintEnd_toEndOf="parent" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_save"
+                android:id="@+id/btn_update"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Lưu"
+                android:text="Cập nhật"
                 android:textColor="@color/primary_blue"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent" />
@@ -95,13 +95,14 @@
                     android:drawableEnd="@drawable/baseline_arrow_drop_down_24"
                     android:drawablePadding="8dp" />
 
-                <!-- Danh sách thứ, ban đầu ẩn -->
+                <!-- Danh sách thứ (ẩn mặc định) -->
                 <com.google.android.flexbox.FlexboxLayout
                     android:id="@+id/layout_days"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:flexWrap="wrap"
                     app:justifyContent="center"
+                    android:visibility="gone"
                     android:paddingVertical="8dp">
 
                     <CheckBox
@@ -146,7 +147,6 @@
                         android:layout_height="wrap_content"
                         android:text="Chủ nhật" />
                 </com.google.android.flexbox.FlexboxLayout>
-
 
                 <!-- Nhãn -->
                 <com.google.android.material.textfield.TextInputLayout
@@ -198,5 +198,16 @@
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
+
+        <!-- Nút xóa -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_delete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Xóa nhắc hẹn"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@android:color/holo_red_dark"
+            android:layout_margin="16dp"
+            android:textStyle="bold" />
     </LinearLayout>
 </ScrollView>
