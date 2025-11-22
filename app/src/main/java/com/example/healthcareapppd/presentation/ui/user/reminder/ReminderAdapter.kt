@@ -3,22 +3,19 @@ package com.example.healthcareapppd.presentation.ui.reminder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CompoundButton
-import android.widget.Switch
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.healthcareapppd.R
+import com.example.healthcareapppd.data.api.model.Reminder
 import com.google.android.material.switchmaterial.SwitchMaterial
-
-data class Reminder(
-    val time: String,     // "07:00"
-    val label: String,    // "Uống thuốc"
-    var isActive: Boolean // true/false
-)
-
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ReminderAdapter(
-    private val reminders: MutableList<Reminder>
+    private val reminders: MutableList<Reminder> = mutableListOf(),
+    private val onToggle: (Reminder, Boolean) -> Unit,
+    private val onDelete: ((Reminder) -> Unit)? = null,
+    private val onClick: ((Reminder) -> Unit)? = null
 ) : RecyclerView.Adapter<ReminderAdapter.ReminderViewHolder>() {
 
     inner class ReminderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -35,23 +32,102 @@ class ReminderAdapter(
 
     override fun onBindViewHolder(holder: ReminderViewHolder, position: Int) {
         val reminder = reminders[position]
-        holder.tvTime.text = reminder.time
-        holder.tvLabel.text = reminder.label
-        holder.switchActive.isChecked = reminder.isActive
-
-        // Cập nhật trạng thái khi bật/tắt Switch
+        
+        // Display title
+        holder.tvLabel.text = reminder.title
+        
+        // Display time from cronExpression or oneTimeAt
+        holder.tvTime.text = when {
+            reminder.cronExpression != null -> {
+                parseCronExpression(reminder.cronExpression)
+            }
+            reminder.oneTimeAt != null -> {
+                parseOneTimeAt(reminder.oneTimeAt)
+            }
+            else -> "Không rõ thời gian"
+        }
+        
+        // Set switch state without triggering listener
         holder.switchActive.setOnCheckedChangeListener(null)
         holder.switchActive.isChecked = reminder.isActive
+        
+        // Handle switch toggle
         holder.switchActive.setOnCheckedChangeListener { _, isChecked ->
-            reminder.isActive = isChecked
+            onToggle(reminder, isChecked)
+        }
+        
+        // Handle click to select reminder
+        holder.itemView.setOnClickListener {
+            onClick?.invoke(reminder)
+        }
+        
+        // Handle long click for delete (if callback provided)
+        onDelete?.let { deleteCallback ->
+            holder.itemView.setOnLongClickListener {
+                deleteCallback(reminder)
+                true
+            }
         }
     }
 
     override fun getItemCount(): Int = reminders.size
 
-    // Hàm thêm nhắc nhở mới
+    fun updateReminders(newReminders: List<Reminder>) {
+        reminders.clear()
+        reminders.addAll(newReminders)
+        notifyDataSetChanged()
+    }
+    
     fun addReminder(reminder: Reminder) {
         reminders.add(reminder)
         notifyItemInserted(reminders.size - 1)
+    }
+    
+    fun removeReminder(reminder: Reminder) {
+        val index = reminders.indexOf(reminder)
+        if (index != -1) {
+            reminders.removeAt(index)
+            notifyItemRemoved(index)
+        }
+    }
+    
+    fun updateReminder(reminder: Reminder) {
+        val index = reminders.indexOfFirst { it.id == reminder.id }
+        if (index != -1) {
+            reminders[index] = reminder
+            notifyItemChanged(index)
+        }
+    }
+    
+    private fun parseCronExpression(cron: String): String {
+        // Parse cron: "0 8 * * *" -> "08:00"
+        val parts = cron.split(" ")
+        if (parts.size >= 2) {
+            val minute = parts[0].padStart(2, '0')
+            val hour = parts[1].padStart(2, '0')
+            return "$hour:$minute"
+        }
+        return cron
+    }
+    
+    private fun parseOneTimeAt(isoDate: String): String {
+        return try {
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+            inputFormat.timeZone = TimeZone.getTimeZone("UTC")
+            val date = inputFormat.parse(isoDate)
+            val outputFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+            date?.let { outputFormat.format(it) } ?: isoDate
+        } catch (e: Exception) {
+            // Try without milliseconds
+            try {
+                val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
+                inputFormat.timeZone = TimeZone.getTimeZone("UTC")
+                val date = inputFormat.parse(isoDate)
+                val outputFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+                date?.let { outputFormat.format(it) } ?: isoDate
+            } catch (e2: Exception) {
+                isoDate
+            }
+        }
     }
 }

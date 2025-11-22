@@ -10,6 +10,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.healthcareapppd.presentation.ui.IntroduceFragment1
 import com.example.healthcareapppd.presentation.ui.IntroduceFragment2
 import com.example.healthcareapppd.presentation.ui.IntroduceFragment3
+import com.example.healthcareapppd.utils.PreferencesManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -20,6 +21,7 @@ class OnboardingActivity : AppCompatActivity() {
     private lateinit var tabLayout: TabLayout
     private lateinit var skipText: TextView
     private lateinit var nextButton: FloatingActionButton
+    private lateinit var preferencesManager: PreferencesManager
 
     private val fragmentList = listOf(
         IntroduceFragment1(),
@@ -30,6 +32,8 @@ class OnboardingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_onboarding) // activity layout
+
+        preferencesManager = PreferencesManager(this)
 
         viewPager = findViewById(R.id.viewPager)
         tabLayout = findViewById(R.id.tabIndicator)
@@ -42,11 +46,10 @@ class OnboardingActivity : AppCompatActivity() {
         // Liên kết TabLayout với ViewPager2
         TabLayoutMediator(tabLayout, viewPager) { _, _ -> }.attach()
 
-        // Skip → nhảy thẳng trang Welcome
+        // Skip → nhảy thẳng trang Welcome và lưu trạng thái
         skipText.setOnClickListener {
-            val intent = Intent(this, WelcomeActivity::class.java)
-            startActivity(intent)
-            finish()
+            preferencesManager.setFirstLaunchDone()
+            navigateToWelcome()
         }
 
         // Next → sang trang tiếp, nếu cuối → sang WelcomeActivity
@@ -54,11 +57,16 @@ class OnboardingActivity : AppCompatActivity() {
             if (viewPager.currentItem < fragmentList.size - 1) {
                 viewPager.currentItem++
             } else {
-                val intent = Intent(this, WelcomeActivity::class.java)
-                startActivity(intent)
-                finish()
+                preferencesManager.setFirstLaunchDone()
+                navigateToWelcome()
             }
         }
+    }
+
+    private fun navigateToWelcome() {
+        val intent = Intent(this, WelcomeActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     // Adapter gộp trong Activity

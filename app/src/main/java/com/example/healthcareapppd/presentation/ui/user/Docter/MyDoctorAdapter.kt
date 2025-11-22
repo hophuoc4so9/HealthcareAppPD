@@ -8,11 +8,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.healthcareapppd.R
-import com.example.healthcareapppd.domain.usecase.DoctorUsecase
+import com.example.healthcareapppd.data.api.model.DoctorProfile
 
 class MyDoctorAdapter(
-    private val doctors: List<DoctorUsecase>,
-    private val onDoctorClicked: (DoctorUsecase) -> Unit // Callback để Fragment xử lý
+    private val doctors: List<DoctorProfile>,
+    private val onDoctorClicked: (DoctorProfile) -> Unit
 ) : RecyclerView.Adapter<MyDoctorAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -32,7 +32,6 @@ class MyDoctorAdapter(
         private val photo: ImageView = itemView.findViewById(R.id.iv_doctor_photo)
         private val name: TextView = itemView.findViewById(R.id.tv_doctor_name)
         private val speciality: TextView = itemView.findViewById(R.id.tv_doctor_speciality)
-        private val rating: TextView = itemView.findViewById(R.id.tv_doctor_rating)
         private val distance: TextView = itemView.findViewById(R.id.tv_doctor_distance)
 
         init {
@@ -44,12 +43,15 @@ class MyDoctorAdapter(
             }
         }
 
-        fun bind(doctor: DoctorUsecase) {
-            photo.setImageResource(doctor.photo)
-            name.text = doctor.name
-            speciality.text = doctor.speciality
-            rating.text = doctor.rating.toString()
-            distance.text = doctor.distance
+        fun bind(doctor: DoctorProfile) {
+            // Hiển thị icon mặc định vì API không cung cấp ảnh
+            photo.setImageResource(R.drawable.ic_doctor)
+            name.text = doctor.fullName
+            speciality.text = doctor.specialization
+                      
+            
+            // Hiển thị clinic_address
+            distance.text = doctor.clinicAddress ?: "Chưa cập nhật địa chỉ"
         }
     }
 }

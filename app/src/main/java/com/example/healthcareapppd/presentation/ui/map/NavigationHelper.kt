@@ -5,7 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.appcompat.app.AlertDialog
-import com.example.healthcareapppd.data.api.Facility
+import com.example.healthcareapppd.data.api.model.Facility
 import com.example.healthcareapppd.data.api.getLatLng
 
 object NavigationHelper {

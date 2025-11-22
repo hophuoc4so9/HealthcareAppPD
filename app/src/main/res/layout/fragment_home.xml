@@ -39,6 +39,7 @@
                 android:layout_width="wrap_content" />
 
             <TextView
+                android:id="@+id/tvUserNameHome"
                 android:text="@string/name"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
@@ -55,7 +56,9 @@
             android:drawableStart="@drawable/ic_search"
             android:hint="@string/search_placeholder"
             android:inputType="text"
-            android:padding="12dp" />
+            android:padding="12dp"
+            android:focusable="false"
+            android:clickable="true" />
 
     </RelativeLayout>
 

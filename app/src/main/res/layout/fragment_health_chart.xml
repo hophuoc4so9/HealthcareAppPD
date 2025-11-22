@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F7FA"
+    tools:context=".presentation.ui.user.chart.HealthChartFragment">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:background="#6C63FF"
+        android:elevation="4dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Biểu đồ sức khỏe"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="7 ngày gần nhất"
+            android:textSize="14sp"
+            android:textColor="#FFFFFF"
+            android:alpha="0.8"
+            android:layout_marginTop="4dp"/>
+    </LinearLayout>
+
+    <!-- Chip Group for selecting metric -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:padding="16dp">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:singleSelection="true"
+            app:checkedChip="@id/chipSteps">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipSteps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bước chân"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                app:chipBackgroundColor="@color/chip_background_selector"
+                app:chipStrokeWidth="0dp"
+                style="@style/Widget.MaterialComponents.Chip.Choice"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipCalories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Calories"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                app:chipBackgroundColor="@color/chip_background_selector"
+                app:chipStrokeWidth="0dp"
+                style="@style/Widget.MaterialComponents.Chip.Choice"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Quãng đường"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                app:chipBackgroundColor="@color/chip_background_selector"
+                app:chipStrokeWidth="0dp"
+                style="@style/Widget.MaterialComponents.Chip.Choice"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipSleep"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Giấc ngủ"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                app:chipBackgroundColor="@color/chip_background_selector"
+                app:chipStrokeWidth="0dp"
+                style="@style/Widget.MaterialComponents.Chip.Choice"/>
+
+        </com.google.android.material.chip.ChipGroup>
+    </HorizontalScrollView>
+
+    <!-- Chart Container -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- Line Chart -->
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/lineChart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="16dp"/>
+
+            <!-- Progress Bar -->
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"/>
+
+        </FrameLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- Info Card -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="2dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thông tin"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#1A1A1A"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="• Biểu đồ hiển thị dữ liệu 7 ngày gần nhất\n• Chọn chỉ số ở phía trên để xem biểu đồ tương ứng\n• Dữ liệu được đồng bộ từ Health Connect và mock data"
+                android:textSize="14sp"
+                android:textColor="#666666"
+                android:layout_marginTop="8dp"
+                android:lineSpacingExtra="4dp"/>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

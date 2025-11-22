@@ -25,7 +25,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.healthcareapppd.R
-import com.example.healthcareapppd.data.api.Facility
+import com.example.healthcareapppd.data.api.model.Facility
 import com.example.healthcareapppd.data.api.RetrofitClient
 import com.example.healthcareapppd.data.api.getLatLng
 import com.example.healthcareapppd.domain.repository.FacilitiesRepository

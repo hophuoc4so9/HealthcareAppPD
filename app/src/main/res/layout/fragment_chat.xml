@@ -44,15 +44,27 @@
     </LinearLayout>
 
     <!-- Danh sách tin nhắn -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvChat"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/inputContainer"
-        android:layout_below="@+id/headerChat"
-        android:padding="16dp"
-        android:clipToPadding="false"
-        android:scrollbars="vertical"/>
+        android:layout_below="@+id/headerChat">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvChat"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp"
+            android:clipToPadding="false"
+            android:scrollbars="vertical"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
+    </FrameLayout>
 
     <!-- Khung nhập tin nhắn -->
     <LinearLayout

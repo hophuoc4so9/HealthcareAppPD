@@ -1,5 +1,6 @@
 package com.example.healthcareapppd.presentation.ui.user
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +9,13 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.healthcareapppd.R
+import com.example.healthcareapppd.WelcomeActivity
+import com.example.healthcareapppd.utils.TokenManager
+import com.example.healthcareapppd.domain.usecase.patient.GetPatientProfileUseCase
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 class ProfileFragment : Fragment() {
 
@@ -17,6 +24,8 @@ class ProfileFragment : Fragment() {
     private lateinit var menuSchedule: LinearLayout
     private lateinit var menuFaq: LinearLayout
     private lateinit var menuLogout: LinearLayout
+    private val getPatientProfileUseCase = GetPatientProfileUseCase()
+    private lateinit var tokenManager: TokenManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,6 +33,7 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
+        tokenManager = TokenManager(requireContext())
         initViews(view)
         setupClickListeners()
         loadUserData()
@@ -40,7 +50,7 @@ class ProfileFragment : Fragment() {
 
     private fun setupClickListeners() {
         menuSchedule.setOnClickListener {
-            Toast.makeText(requireContext(), "Mở màn hình xem lịch khám", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_profileFragment_to_viewPatientProfileFragment)
         }
 
         menuFaq.setOnClickListener {
@@ -49,13 +59,48 @@ class ProfileFragment : Fragment() {
 
         // Click vào Logout
         menuLogout.setOnClickListener {
-            Toast.makeText(requireContext(), "Đăng xuất thành công", Toast.LENGTH_SHORT).show()
+            logout()
         }
     }
 
+    private fun logout() {
+        // Xóa token
+        val tokenManager = TokenManager(requireContext())
+        tokenManager.clearToken()
+        
+        // Hiển thị thông báo
+        Toast.makeText(requireContext(), "Đăng xuất thành công", Toast.LENGTH_SHORT).show()
+        
+        // Chuyển về WelcomeActivity và xóa toàn bộ back stack
+        val intent = Intent(requireContext(), WelcomeActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        requireActivity().finish()
+    }
+
     private fun loadUserData() {
-        tvUserName.text = "Nguyễn Văn A"
-        tvUserEmail.text = "nguyenvana@email.com"
+        lifecycleScope.launch {
+            val token = tokenManager.getToken()
+            if (token != null) {
+                val result = getPatientProfileUseCase(token)
+                result.onSuccess { profile ->
+                    tvUserName.text = profile.fullName
+                    tvUserEmail.text = profile.email ?: "Email không có"
+                }.onFailure { error ->
+                    // Hiển thị giá trị mặc định nếu lỗi
+                    tvUserName.text = "Người dùng"
+                    tvUserEmail.text = "email@example.com"
+                    Toast.makeText(
+                        requireContext(),
+                        "Không thể tải thông tin: ${error.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } else {
+                tvUserName.text = "Người dùng"
+                tvUserEmail.text = "email@example.com"
+            }
+        }
     }
 
     companion object {

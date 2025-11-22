@@ -3,32 +3,40 @@ package com.example.healthcareapppd.presentation.ui
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.healthcareapppd.AuthActivity
 import com.example.healthcareapppd.LoginActivity
+import com.example.healthcareapppd.MainActivity
 import com.example.healthcareapppd.R
+import com.example.healthcareapppd.data.api.RetrofitClient
+import com.example.healthcareapppd.data.api.model.LoginRequest
 import com.example.healthcareapppd.databinding.FragmentLoginBinding
+import com.example.healthcareapppd.utils.TokenManager
+import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
+    private lateinit var tokenManager: TokenManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        tokenManager = TokenManager(requireContext())
 
         // Xử lý click Đăng nhập
         binding.btnLogin.setOnClickListener {
             if (validateInputs()) {
-                Toast.makeText(requireContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show()
-                // TODO: gọi API hoặc chuyển sang màn hình chính
+                performLogin()
             }
         }
 
@@ -40,18 +48,70 @@ class LoginFragment : Fragment() {
         return binding.root
     }
 
-    private fun validateInputs(): Boolean {
-        val phone = binding.edtPhone.text.toString().trim()
+    private fun performLogin() {
+        val email = binding.edtEmail.text.toString().trim()
         val password = binding.edtPassword.text.toString().trim()
 
-        if (phone.isEmpty()) {
-            binding.edtPhone.error = "Vui lòng nhập số điện thoại"
+        // Hiển thị loading
+        binding.btnLogin.isEnabled = false
+        binding.btnLogin.text = "Đang đăng nhập..."
+
+        lifecycleScope.launch {
+            try {
+                val loginRequest = LoginRequest(email, password)
+                val response = RetrofitClient.authApi.login(loginRequest)
+
+                if (response.success && response.data != null) {
+                    // Lưu token và thông tin user
+                    tokenManager.saveToken(response.data.token)
+                    tokenManager.saveUserInfo(
+                        response.data.user.id,
+                        response.data.user.email,
+                        response.data.user.role
+                    )
+
+                    Toast.makeText(
+                        requireContext(),
+                        "Đăng nhập thành công",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    // Chuyển đến MainActivity
+                    val intent = Intent(requireContext(), MainActivity::class.java)
+                    startActivity(intent)
+                    (activity as? LoginActivity)?.finish()
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        response.message ?: "Đăng nhập thất bại",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    binding.btnLogin.isEnabled = true
+                    binding.btnLogin.text = "Đăng nhập"
+                }
+            } catch (e: Exception) {
+                Toast.makeText(
+                    requireContext(),
+                    "Lỗi: ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+                binding.btnLogin.isEnabled = true
+                binding.btnLogin.text = "Đăng nhập"
+            }
+        }
+    }
+
+    private fun validateInputs(): Boolean {
+        val email = binding.edtEmail.text.toString().trim()
+        val password = binding.edtPassword.text.toString().trim()
+
+        if (email.isEmpty()) {
+            binding.edtEmail.error = "Vui lòng nhập email"
             return false
         }
 
-        // Regex: số điện thoại VN 10 số, bắt đầu bằng 0
-        if (!phone.matches(Regex("^0\\d{9}$"))) {
-            binding.edtPhone.error = "Số điện thoại không hợp lệ"
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            binding.edtEmail.error = "Email không hợp lệ"
             return false
         }
 

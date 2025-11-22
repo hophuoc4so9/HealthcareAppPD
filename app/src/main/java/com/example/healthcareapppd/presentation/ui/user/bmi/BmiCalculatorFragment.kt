@@ -5,13 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.healthcareapppd.R
+import com.example.healthcareapppd.utils.TokenManager
 import com.example.healthcareapppd.databinding.FragmentBmiCalculatorBinding
 import com.example.healthcareapppd.domain.usecase.Gender
+import com.example.healthcareapppd.domain.usecase.patient.AddVitalsUseCase
 import kotlinx.coroutines.launch
 
 class BmiCalculatorFragment : Fragment() {
@@ -22,12 +25,16 @@ class BmiCalculatorFragment : Fragment() {
 
     // Khởi tạo ViewModel bằng KTX delegate
     private val viewModel: BmiCalculatorViewModel by viewModels()
+    
+    private val addVitalsUseCase = AddVitalsUseCase()
+    private lateinit var tokenManager: TokenManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentBmiCalculatorBinding.inflate(inflater, container, false)
+        tokenManager = TokenManager(requireContext())
         return binding.root
     }
 
@@ -44,9 +51,35 @@ class BmiCalculatorFragment : Fragment() {
             }
 
             viewModel.calculateBmi(weight, height, age, selectedGender)
+            
+            // Lưu vitals lên server
+            saveVitalsToServer(weight, height)
         }
 
         observeUiState()
+    }
+    
+    private fun saveVitalsToServer(weight: String, height: String) {
+        val token = tokenManager.getToken() ?: return
+        
+        val weightKg = weight.toDoubleOrNull()
+        val heightCm = height.toDoubleOrNull()
+        
+        if (weightKg == null || heightCm == null) return
+        
+        viewLifecycleOwner.lifecycleScope.launch {
+            val result = addVitalsUseCase(
+                token = token,
+                heightCm = heightCm,
+                weightKg = weightKg
+            )
+            
+            result.onSuccess {
+                Toast.makeText(context, "Đã lưu chỉ số sức khỏe", Toast.LENGTH_SHORT).show()
+            }.onFailure { error ->
+                // Silent fail - không hiện lỗi cho user
+            }
+        }
     }
 
     private fun observeUiState() {

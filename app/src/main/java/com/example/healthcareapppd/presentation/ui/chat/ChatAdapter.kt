@@ -8,13 +8,15 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.healthcareapppd.domain.usecase.ChatMessage
+import com.example.healthcareapppd.data.api.model.ChatMessage
 import com.example.healthcareapppd.R
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ChatAdapter(private val messages: List<ChatMessage>) :
-    RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
+class ChatAdapter(
+    private val messages: MutableList<ChatMessage>,
+    private val currentUserId: String
+) : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -23,25 +25,44 @@ class ChatAdapter(private val messages: List<ChatMessage>) :
     }
 
     override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
-        holder.bind(messages[position])
+        holder.bind(messages[position], currentUserId)
     }
 
     override fun getItemCount() = messages.size
+
+    fun addMessage(message: ChatMessage) {
+        messages.add(message)
+        notifyItemInserted(messages.size - 1)
+    }
+
+    fun updateMessages(newMessages: List<ChatMessage>) {
+        messages.clear()
+        messages.addAll(newMessages)
+        notifyDataSetChanged()
+    }
 
     class ChatViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val tvMessage: TextView = itemView.findViewById(R.id.tvMessage)
         private val tvTime: TextView = itemView.findViewById(R.id.tvTime)
         private val container: LinearLayout = itemView.findViewById(R.id.containerMessage)
 
-        fun bind(message: ChatMessage) {
-            tvMessage.text = message.message
+        fun bind(message: ChatMessage, currentUserId: String) {
+            tvMessage.text = message.messageContent
 
             // Hiển thị thời gian
             val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-            tvTime.text = timeFormat.format(Date())
+            try {
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+                dateFormat.timeZone = TimeZone.getTimeZone("UTC")
+                val date = dateFormat.parse(message.sentAt)
+                tvTime.text = date?.let { timeFormat.format(it) } ?: ""
+            } catch (e: Exception) {
+                tvTime.text = ""
+            }
 
             // Nếu là mình gửi → căn phải, nền xanh
-            if (message.isSender) {
+            val isSender = message.senderUserId == currentUserId
+            if (isSender) {
                 container.gravity = Gravity.END
                 tvMessage.setBackgroundResource(R.drawable.bg_chat_sender)
                 tvMessage.setTextColor(Color.WHITE)

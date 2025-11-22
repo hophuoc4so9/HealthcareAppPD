@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.healthcareapppd.R
-import com.example.healthcareapppd.data.api.Facility
+import com.example.healthcareapppd.data.api.model.Facility
 import kotlin.math.roundToInt
 
 class FacilityAdapter(
@@ -67,7 +67,9 @@ class FacilityAdapter(
             }
         }
 
-        private fun formatType(type: String): String {
+        private fun formatType(type: String?): String {
+            if (type == null) return "Cơ sở y tế"
+            
             return when (type.lowercase()) {
                 "hospital" -> "Bệnh viện"
                 "clinic" -> "Phòng khám"

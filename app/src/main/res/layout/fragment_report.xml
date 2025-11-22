@@ -88,7 +88,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Nhịp tim"
+                        android:text="Quãng đường"
                         android:textSize="15sp"
                         android:textColor="#FFFFFF"
                         android:layout_marginStart="8dp"/>
@@ -113,7 +113,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=" bpm"
+                        android:text=" m"
                         android:textSize="16sp"
                         android:textColor="#FFFFFF"
                         android:layout_marginStart="4dp"/>
@@ -396,6 +396,87 @@
                 app:tint="#FFFFFF"/>
         </LinearLayout>
 
+        <!-- Nút tạo Mock Data -->
+        <LinearLayout
+            android:id="@+id/btnGenerateMockData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="18dp"
+            android:gravity="center"
+            android:background="@drawable/bg_card_steps"
+            android:layout_marginBottom="12dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@android:drawable/ic_menu_upload"
+                app:tint="#FFFFFF"
+                android:layout_marginEnd="12dp"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Tạo Mock Data (7 ngày)"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@android:drawable/ic_media_play"
+                app:tint="#FFFFFF"/>
+        </LinearLayout>
+
+        <!-- Nút Health Connect Sync -->
+        <LinearLayout
+            android:id="@+id/btnSyncHealthConnect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="18dp"
+            android:gravity="center"
+            android:background="@drawable/bg_card_heart"
+            android:layout_marginBottom="16dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@android:drawable/stat_sys_download"
+                app:tint="#FFFFFF"
+                android:layout_marginEnd="12dp"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Đồng bộ Health Connect"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@android:drawable/ic_media_play"
+                app:tint="#FFFFFF"/>
+        </LinearLayout>
+
+        <!-- Progress Text -->
+        <TextView
+            android:id="@+id/tvMockProgress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="14sp"
+            android:textColor="#6C63FF"
+            android:gravity="center"
+            android:padding="8dp"
+            android:visibility="gone"
+            android:layout_marginBottom="16dp"/>
+
         <!-- Nút xem chi tiết -->
         <LinearLayout
             android:id="@+id/btnViewAll"
@@ -404,6 +485,8 @@
             android:orientation="horizontal"
             android:gravity="center"
             android:padding="12dp"
+            android:clickable="true"
+            android:focusable="true"
             android:background="?attr/selectableItemBackground">
 
             <TextView

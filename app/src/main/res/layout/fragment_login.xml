@@ -21,22 +21,22 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutPhone"
+        android:id="@+id/layoutEmail"
         style="@style/RoundedTextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:hint="@string/phone"
-        app:startIconDrawable="@drawable/baseline_phone_24"
+        android:hint="@string/email"
+        app:startIconDrawable="@drawable/baseline_email_24"
         app:layout_constraintTop_toBottomOf="@id/tvTitle"
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edtPhone"
+            android:id="@+id/edtEmail"
             style="@style/RoundedTextInputEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="phone" />
+            android:inputType="textEmailAddress" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -48,7 +48,7 @@
         android:hint="@string/password"
         app:startIconDrawable="@drawable/baseline_lock_24"
         app:endIconMode="password_toggle"
-        app:layout_constraintTop_toBottomOf="@id/layoutPhone"
+        app:layout_constraintTop_toBottomOf="@id/layoutEmail"
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -116,79 +116,5 @@
             android:focusable="true" />
     </LinearLayout>
 
-
-    <LinearLayout
-        android:id="@+id/dividerLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="96dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnLogin">
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1"
-            android:background="@color/light_gray" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/or_login"
-            android:textColor="@color/light_gray"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1"
-            android:background="@color/light_gray" />
-    </LinearLayout>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnGoogle"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_marginTop="24dp"
-        android:text="@string/sign_in_google"
-        android:textAllCaps="false"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:backgroundTint="@color/white"
-        app:cornerRadius="10dp"
-        app:strokeWidth="1dp"
-        app:strokeColor="@color/light_gray"
-        app:icon="@drawable/ic_google"
-        app:iconGravity="start"
-        app:iconSize="24sp"
-        app:iconTint="@null"
-        app:layout_constraintTop_toBottomOf="@id/dividerLayout"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnFacebook"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/sign_in_facebook"
-        android:textAllCaps="false"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:backgroundTint="@color/white"
-        app:cornerRadius="10dp"
-        app:strokeWidth="1dp"
-        app:strokeColor="@color/light_gray"
-        app:icon="@drawable/ic_facebook"
-        app:iconGravity="start"
-        app:iconSize="24sp"
-        app:iconTint="@null"
-        app:layout_constraintTop_toBottomOf="@id/btnGoogle"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,14 +10,15 @@ class AuthActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Dùng fragment_auth.xml
+        // Dùng fragment_auth.xml (không có bottom nav)
         supportFragmentManager.beginTransaction()
             .replace(android.R.id.content, AuthFragment())
             .commit()
     }
 
-    // Hàm này sẽ được gọi từ AuthFragment khi login thành công
+    // Hàm này sẽ được gọi từ AuthFragment khi register thành công
     fun navigateToMain() {
-        startActivity(Intent(this, LoginActivity::class.java))
+        startActivity(Intent(this, MainActivity::class.java))
+        finish() // Đóng AuthActivity, không cho quay lại
     }
 }

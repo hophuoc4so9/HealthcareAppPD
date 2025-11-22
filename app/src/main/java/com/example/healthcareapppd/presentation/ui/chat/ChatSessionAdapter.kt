@@ -5,12 +5,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.healthcareapppd.domain.usecase.ChatSession
+import com.example.healthcareapppd.data.api.model.Conversation
 import com.example.healthcareapppd.R
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ChatSessionAdapter(
-    private val sessions: List<ChatSession>,
-    private val onClick: (ChatSession) -> Unit
+    private val conversations: MutableList<Conversation>,
+    private val currentUserRole: String,
+    private val onClick: (Conversation) -> Unit
 ) : RecyclerView.Adapter<ChatSessionAdapter.ChatSessionViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatSessionViewHolder {
@@ -20,10 +23,16 @@ class ChatSessionAdapter(
     }
 
     override fun onBindViewHolder(holder: ChatSessionViewHolder, position: Int) {
-        holder.bind(sessions[position], onClick)
+        holder.bind(conversations[position], currentUserRole, onClick)
     }
 
-    override fun getItemCount() = sessions.size
+    override fun getItemCount() = conversations.size
+
+    fun updateConversations(newConversations: List<Conversation>) {
+        conversations.clear()
+        conversations.addAll(newConversations)
+        notifyDataSetChanged()
+    }
 
     class ChatSessionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val tvName: TextView = itemView.findViewById(R.id.tvName)
@@ -33,28 +42,48 @@ class ChatSessionAdapter(
         private val vOnlineStatus: View = itemView.findViewById(R.id.vOnlineStatus)
         private val tvUnreadCount: TextView = itemView.findViewById(R.id.tvUnreadCount)
 
-        fun bind(session: ChatSession, onClick: (ChatSession) -> Unit) {
-            tvName.text = session.name
-            tvLastMessage.text = session.lastMessage
-            tvTime.text = "10:30" // Có thể thêm thời gian thật từ data
+        fun bind(conversation: Conversation, currentUserRole: String, onClick: (Conversation) -> Unit) {
+            // Hiển thị tên người chat (nếu là patient thì hiển thị tên doctor và ngược lại)
+            val displayName = if (currentUserRole == "patient") {
+                conversation.doctorName ?: "Bác sĩ"
+            } else {
+                conversation.patientName ?: "Bệnh nhân"
+            }
+            tvName.text = displayName
+            
+            tvLastMessage.text = conversation.lastMessage ?: "Chưa có tin nhắn"
+            
+            // Hiển thị thời gian
+            if (conversation.lastMessageTime != null) {
+                try {
+                    val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+                    dateFormat.timeZone = TimeZone.getTimeZone("UTC")
+                    val date = dateFormat.parse(conversation.lastMessageTime)
+                    val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+                    tvTime.text = date?.let { timeFormat.format(it) } ?: ""
+                } catch (e: Exception) {
+                    tvTime.text = ""
+                }
+            } else {
+                tvTime.text = ""
+            }
 
-            // Hiển thị trạng thái
-            if (session.isOngoing) {
-                tvStatus.text = "Đang hoạt động"
+            // Hiển thị trạng thái và số tin nhắn chưa đọc
+            val hasUnread = conversation.unreadCount > 0
+            if (hasUnread) {
+                tvStatus.text = "Có tin nhắn mới"
                 tvStatus.setTextColor(itemView.context.getColor(android.R.color.holo_green_dark))
                 vOnlineStatus.visibility = View.VISIBLE
-
-                // Hiển thị badge tin nhắn chưa đọc (demo)
                 tvUnreadCount.visibility = View.VISIBLE
-                tvUnreadCount.text = "2"
+                tvUnreadCount.text = conversation.unreadCount.toString()
             } else {
-                tvStatus.text = "Đã đóng"
+                tvStatus.text = "Đã đọc"
                 tvStatus.setTextColor(itemView.context.getColor(android.R.color.darker_gray))
                 vOnlineStatus.visibility = View.GONE
                 tvUnreadCount.visibility = View.GONE
             }
 
-            itemView.setOnClickListener { onClick(session) }
+            itemView.setOnClickListener { onClick(conversation) }
         }
     }
 }

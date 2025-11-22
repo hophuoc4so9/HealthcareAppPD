@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingBottom="24dp">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/ic_person"
+                android:background="@drawable/circle_background"
+                android:backgroundTint="@color/royalblue"
+                android:padding="16dp"
+                app:tint="@color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Tạo Hồ Sơ Bệnh Nhân"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/text" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Điền thông tin cá nhân của bạn"
+                android:textSize="14sp"
+                android:textColor="@color/gray" />
+
+        </LinearLayout>
+
+        <!-- Error Message -->
+        <TextView
+            android:id="@+id/tvError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:background="@drawable/error_background"
+            android:padding="12dp"
+            android:textColor="@color/error"
+            android:textSize="14sp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Success Message -->
+        <TextView
+            android:id="@+id/tvSuccess"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:background="@drawable/success_background"
+            android:padding="12dp"
+            android:textColor="@color/success"
+            android:textSize="14sp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Full Name -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Họ và tên *"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/text"
+                android:layout_marginBottom="8dp" />
+
+            <EditText
+                android:id="@+id/etFullName"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="Nhập họ và tên"
+                android:inputType="text"
+                android:padding="12dp"
+                android:background="@drawable/edit_text_background"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <!-- Date of Birth -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ngày sinh *"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/text"
+                android:layout_marginBottom="8dp" />
+
+            <EditText
+                android:id="@+id/etDateOfBirth"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="YYYY-MM-DD"
+                android:inputType="date"
+                android:padding="12dp"
+                android:background="@drawable/edit_text_background"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <!-- Sex -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Giới tính *"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/text"
+                android:layout_marginBottom="8dp" />
+
+            <Spinner
+                android:id="@+id/spinnerSex"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:padding="12dp"
+                android:background="@drawable/edit_text_background" />
+
+        </LinearLayout>
+
+        <!-- Phone -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Số điện thoại"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/text"
+                android:layout_marginBottom="8dp" />
+
+            <EditText
+                android:id="@+id/etPhone"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="0901234567"
+                android:inputType="phone"
+                android:padding="12dp"
+                android:background="@drawable/edit_text_background"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <!-- Address -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Địa chỉ"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/text"
+                android:layout_marginBottom="8dp" />
+
+            <EditText
+                android:id="@+id/etAddress"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="123 Nguyễn Huệ, Quận 1, TP.HCM"
+                android:inputType="text"
+                android:padding="12dp"
+                android:background="@drawable/edit_text_background"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <!-- Emergency Contact Name -->
+
+        <!-- Emergency Contact Phone -->
+
+        <!-- Progress Bar -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:visibility="gone"
+            android:indeterminate="true"
+            android:layout_marginBottom="16dp"
+            android:progressDrawable="@drawable/progress_bar_background" />
+
+        <!-- Create Profile Button -->
+        <Button
+            android:id="@+id/btnCreateProfile"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Tạo Hồ Sơ"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:background="@drawable/button_background"
+            android:layout_marginBottom="12dp" />
+
+    </LinearLayout>
+
+</ScrollView>

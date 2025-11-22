@@ -3,8 +3,9 @@ package com.example.healthcareapppd.presentation.ui.map
 import android.location.Location
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.healthcareapppd.data.api.Facility
+import com.example.healthcareapppd.data.api.*
 import com.example.healthcareapppd.data.api.getLatLng
+import com.example.healthcareapppd.data.api.model.Facility
 import com.example.healthcareapppd.domain.repository.FacilitiesRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -117,14 +118,12 @@ class HealthMapViewModel(
         setUserLocation(lat, lng)
 
         viewModelScope.launch {
-            val params = mutableMapOf(
-                "lat" to lat.toString(),
-                "lng" to lng.toString(),
-                "radius" to radius.toString(),
-                "limit" to limit.toString()
+            val result = facilitiesRepository.getNearestFacilities(
+                lat = lat,
+                lng = lng,
+                radius = radius,
+                limit = limit
             )
-
-            val result = facilitiesRepository.getNearestFacilities(params)
 
             result.onSuccess { facilities ->
                 _masterFacilityList.value = facilities

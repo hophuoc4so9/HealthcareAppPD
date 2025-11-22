@@ -85,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="16dp"
-                    android:text="Xem lịch khám"
+                    android:text="Xem thông tin hồ sơ"
                     android:textColor="@color/text"
                     android:textSize="16sp" />
 
