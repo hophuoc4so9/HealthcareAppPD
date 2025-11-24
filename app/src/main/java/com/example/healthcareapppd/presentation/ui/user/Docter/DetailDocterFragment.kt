@@ -85,7 +85,7 @@ class DetailDocterFragment : Fragment() {
             
 
             // Hiển thị bệnh viện
-            distance.text = doctor.hospitalAffiliation ?: "Chưa cập nhật"
+            distance.text = doctor.clinicAddress ?: "Chưa cập nhật"
             
             // Mô tả chi tiết
             val description = buildString {

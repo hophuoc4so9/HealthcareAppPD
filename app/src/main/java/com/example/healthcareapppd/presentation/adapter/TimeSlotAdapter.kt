@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.healthcareapppd.R
 import com.example.healthcareapppd.data.api.model.AvailabilitySlot
@@ -20,51 +19,81 @@ class TimeSlotAdapter(
     private var selectedPosition = -1
 
     inner class TimeSlotViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val cardTimeSlot: MaterialCardView = itemView.findViewById(R.id.card_time_slot)
-        val tvTimeSlot: TextView = itemView.findViewById(R.id.tv_time_slot)
+        private val cardTimeSlot: MaterialCardView = itemView.findViewById(R.id.card_time_slot)
+        private val tvTimeSlot: TextView = itemView.findViewById(R.id.tv_time_slot)
 
         fun bind(slot: AvailabilitySlot, position: Int) {
-            // Format time display
-            val timeText = formatTimeRange(slot.startTime, slot.endTime)
-            tvTimeSlot.text = timeText
+            // 1. Hiển thị giờ
+            tvTimeSlot.text = formatTimeRange(slot.startTime, slot.endTime)
 
-            // Update selection state
-            cardTimeSlot.isChecked = position == selectedPosition
-            
-            // Set colors based on selection
+            // 2. Xử lý màu sắc khi được chọn
             if (position == selectedPosition) {
                 cardTimeSlot.setCardBackgroundColor(itemView.context.getColor(R.color.primary_blue))
                 tvTimeSlot.setTextColor(itemView.context.getColor(android.R.color.white))
+                cardTimeSlot.isChecked = true
+                cardTimeSlot.strokeWidth = 0
             } else {
                 cardTimeSlot.setCardBackgroundColor(itemView.context.getColor(android.R.color.white))
                 tvTimeSlot.setTextColor(itemView.context.getColor(android.R.color.black))
+                cardTimeSlot.isChecked = false
+                cardTimeSlot.strokeWidth = 2 // Thêm viền nhẹ nếu muốn card chưa chọn nổi hơn
             }
 
+            // 3. Xử lý sự kiện click
             cardTimeSlot.setOnClickListener {
-                val previousPosition = selectedPosition
-                selectedPosition = position
-                notifyItemChanged(previousPosition)
+                val currentPosition = bindingAdapterPosition
+                if (currentPosition == RecyclerView.NO_POSITION) return@setOnClickListener
+
+                val previous = selectedPosition
+                selectedPosition = currentPosition
+
+                if (previous != -1) notifyItemChanged(previous)
                 notifyItemChanged(selectedPosition)
+
                 onSlotSelected(slot)
             }
         }
 
-        private fun formatTimeRange(startTime: String, endTime: String): String {
+        private fun formatTimeRange(start: String, end: String): String {
+            val startTime = formatToHourMinute(start)
+            val endTime = formatToHourMinute(end)
+            return "$startTime - $endTime"
+        }
+
+        private fun formatToHourMinute(isoDate: String?): String {
+            if (isoDate == null) return "??:??"
             return try {
-                val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale("vi"))
-                inputFormat.timeZone = TimeZone.getTimeZone("UTC")
+                val formats = listOf(
+                    "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+                    "yyyy-MM-dd'T'HH:mm:ss'Z'",
+                    "yyyy-MM-dd'T'HH:mm:ss"
+                )
+                var date: Date? = null
                 
-                val outputFormat = SimpleDateFormat("HH:mm", Locale("vi"))
+
+                for (fmt in formats) {
+                    try {
+                        val inputFormat = SimpleDateFormat(fmt, Locale.US)
+                        inputFormat.timeZone = TimeZone.getTimeZone("UTC") // Input là UTC
+                        date = inputFormat.parse(isoDate)
+                        if (date != null) break
+                    } catch (_: Exception) {}
+                }
+
+                val outputFormat = SimpleDateFormat("HH:mm", Locale.US)
+                outputFormat.timeZone = TimeZone.getTimeZone("UTC") // Output cũng là UTC
                 
-                val startDate = inputFormat.parse(startTime)
-                val endDate = inputFormat.parse(endTime)
-                
-                val startFormatted = startDate?.let { outputFormat.format(it) } ?: ""
-                val endFormatted = endDate?.let { outputFormat.format(it) } ?: ""
-                
-                "$startFormatted - $endFormatted"
+                date?.let { outputFormat.format(it) } ?: "??:??"
             } catch (e: Exception) {
-                "Không xác định"
+                try {
+                    // Ví dụ: 2025-11-25T08:00:00... -> Lấy từ ký tự T+1 đến T+6
+                    if (isoDate.contains("T")) {
+                        val timePart = isoDate.split("T")[1]
+                        if (timePart.length >= 5) timePart.substring(0, 5) else "??:??"
+                    } else "??:??"
+                } catch (ex: Exception) {
+                    "??:??"
+                }
             }
         }
     }
@@ -82,19 +111,29 @@ class TimeSlotAdapter(
     override fun getItemCount(): Int = timeSlots.size
 
     fun updateTimeSlots(newSlots: List<AvailabilitySlot>) {
-        // Sắp xếp theo thời gian từ sớm đến muộn
-        timeSlots = newSlots.sortedBy { it.startTime }
+        // Sort danh sách theo thời gian tăng dần
+        val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
+
+        
+        timeSlots = newSlots.sortedBy {
+            it.startTime 
+        }
+
         selectedPosition = -1
         notifyDataSetChanged()
     }
 
     fun getSelectedSlot(): AvailabilitySlot? {
-        return if (selectedPosition != -1) timeSlots[selectedPosition] else null
+        return if (selectedPosition != -1 && selectedPosition < timeSlots.size) {
+            timeSlots[selectedPosition]
+        } else {
+            null
+        }
     }
 
     fun clearSelection() {
-        val previousPosition = selectedPosition
+        val previous = selectedPosition
         selectedPosition = -1
-        notifyItemChanged(previousPosition)
+        if (previous != -1) notifyItemChanged(previous)
     }
 }

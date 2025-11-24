@@ -3,7 +3,6 @@ package com.example.healthcareapppd.presentation.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.healthcareapppd.R
@@ -84,7 +83,7 @@ class ReminderAppointmentAdapter(
         holder.tvDoctorName.text = appointment.doctorName ?: "Bác sĩ"
         holder.tvSpecialization.text = appointment.specialization ?: ""
         
-        // Format time
+        // Format time - Đã sửa lỗi hiển thị giờ tại đây
         val timeText = formatAppointmentTime(appointment.startTime, appointment.endTime)
         holder.tvTime.text = timeText
         
@@ -124,7 +123,7 @@ class ReminderAppointmentAdapter(
     private fun bindReminder(holder: ReminderViewHolder, reminder: Reminder) {
         holder.tvLabel.text = reminder.title
         
-        // Display time
+        // Display time - Giữ nguyên logic Reminder cũ
         holder.tvTime.text = when {
             reminder.cronExpression != null -> parseCronExpression(reminder.cronExpression)
             reminder.oneTimeAt != null -> parseOneTimeAt(reminder.oneTimeAt, reminder.timezoneName)
@@ -158,7 +157,6 @@ class ReminderAppointmentAdapter(
     fun updateItems(appointments: List<Appointment>, reminders: List<Reminder>) {
         items.clear()
         
-        // Combine and sort by time
         val combinedItems = mutableListOf<ReminderAppointmentItem>()
         
         appointments.forEach { appointment ->
@@ -169,7 +167,7 @@ class ReminderAppointmentAdapter(
             combinedItems.add(ReminderAppointmentItem.ReminderItem(reminder))
         }
         
-        // Sort by time (appointments by startTime, reminders by oneTimeAt or current time)
+        // Sort items
         combinedItems.sortByDescending { item ->
             when (item) {
                 is ReminderAppointmentItem.AppointmentItem -> {
@@ -205,23 +203,38 @@ class ReminderAppointmentAdapter(
         }
     }
 
+
     private fun formatAppointmentTime(startTime: String?, endTime: String?): String {
         if (startTime == null) return "Chưa xác định"
         
         return try {
-            // Try with milliseconds first
-            val inputFormat1 = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-            inputFormat1.timeZone = TimeZone.getTimeZone("UTC")
-            val inputFormat2 = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
-            inputFormat2.timeZone = TimeZone.getTimeZone("UTC")
+            val formats = listOf(
+                "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+                "yyyy-MM-dd'T'HH:mm:ss'Z'",
+                "yyyy-MM-dd'T'HH:mm:ss"
+            )
             
-            val startDate = try { inputFormat1.parse(startTime) } catch (_: Exception) { inputFormat2.parse(startTime) }
-            val endDate = endTime?.let { 
-                try { inputFormat1.parse(it) } catch (_: Exception) { inputFormat2.parse(it) }
+            var startDate: Date? = null
+            var endDate: Date? = null
+
+            // Input: UTC
+            for (fmt in formats) {
+                try {
+                    val inputFormat = SimpleDateFormat(fmt, Locale.US)
+                    inputFormat.timeZone = TimeZone.getTimeZone("UTC")
+                    
+                    if (startDate == null) startDate = inputFormat.parse(startTime)
+                    if (endDate == null && endTime != null) endDate = inputFormat.parse(endTime)
+                    
+                    if (startDate != null && (endTime == null || endDate != null)) break
+                } catch (_: Exception) {}
             }
             
             val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+            timeFormat.timeZone = TimeZone.getTimeZone("UTC") // FIX QUAN TRỌNG
+
             val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            dateFormat.timeZone = TimeZone.getTimeZone("UTC") // FIX QUAN TRỌNG
             
             if (startDate != null) {
                 val startTimeStr = timeFormat.format(startDate)
@@ -241,16 +254,6 @@ class ReminderAppointmentAdapter(
         }
     }
     
-    private fun parseCronExpression(cron: String): String {
-        val parts = cron.split(" ")
-        if (parts.size >= 2) {
-            val minute = parts[0].padStart(2, '0')
-            val hour = parts[1].padStart(2, '0')
-            return "$hour:$minute"
-        }
-        return cron
-    }
-    
     private fun parseOneTimeAt(isoDate: String?, timezoneName: String?): String {
         if (isoDate == null) return "Không rõ"
         return try {
@@ -268,23 +271,43 @@ class ReminderAppointmentAdapter(
                     if (date != null) break
                 } catch (_: Exception) {}
             }
+            
             val outputFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
             outputFormat.timeZone = TimeZone.getTimeZone(timezoneName ?: "Asia/Ho_Chi_Minh")
+            
             date?.let { outputFormat.format(it) } ?: isoDate
         } catch (e: Exception) {
             isoDate
         }
     }
+
+    private fun parseCronExpression(cron: String): String {
+        val parts = cron.split(" ")
+        if (parts.size >= 2) {
+            val minute = parts[0].padStart(2, '0')
+            val hour = parts[1].padStart(2, '0')
+            return "$hour:$minute"
+        }
+        return cron
+    }
     
     private fun parseIsoToTimestamp(isoDate: String?): Long {
         if (isoDate == null) return 0L
-        
         return try {
-            val inputFormat1 = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-            inputFormat1.timeZone = TimeZone.getTimeZone("UTC")
-            val inputFormat2 = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
-            inputFormat2.timeZone = TimeZone.getTimeZone("UTC")
-            val date = try { inputFormat1.parse(isoDate) } catch (_: Exception) { inputFormat2.parse(isoDate) }
+            val formats = listOf(
+                "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+                "yyyy-MM-dd'T'HH:mm:ss'Z'",
+                "yyyy-MM-dd'T'HH:mm:ss"
+            )
+            var date: Date? = null
+            for (fmt in formats) {
+                try {
+                    val inputFormat = SimpleDateFormat(fmt, Locale.US)
+                    inputFormat.timeZone = TimeZone.getTimeZone("UTC")
+                    date = inputFormat.parse(isoDate)
+                    if (date != null) break
+                } catch (_: Exception) {}
+            }
             date?.time ?: 0L
         } catch (e: Exception) {
             0L
