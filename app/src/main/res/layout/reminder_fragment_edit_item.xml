@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="?android:attr/colorBackground"
     tools:context="com.example.healthcareapppd.presentation.ui.user.reminder.EditReminderFragment">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -61,6 +64,28 @@
             android:layout_height="wrap_content"
             android:timePickerMode="spinner" />
     </com.google.android.material.card.MaterialCardView>
+
+    <!-- Chọn ngày trong tuần -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:layout_marginTop="8dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lặp lại vào"
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+            android:layout_marginBottom="4dp" />
+        <CheckBox android:id="@+id/checkboxMon" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Thứ 2" />
+        <CheckBox android:id="@+id/checkboxTue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Thứ 3" />
+        <CheckBox android:id="@+id/checkboxWed" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Thứ 4" />
+        <CheckBox android:id="@+id/checkboxThu" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Thứ 5" />
+        <CheckBox android:id="@+id/checkboxFri" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Thứ 6" />
+        <CheckBox android:id="@+id/checkboxSat" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Thứ 7" />
+        <CheckBox android:id="@+id/checkboxSun" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="CN" />
+    </LinearLayout>
 
     <!-- Các tùy chọn -->
     <com.google.android.material.card.MaterialCardView
@@ -181,3 +206,4 @@
         android:layout_gravity="center"
         android:visibility="gone" />
 </LinearLayout>
+</ScrollView>

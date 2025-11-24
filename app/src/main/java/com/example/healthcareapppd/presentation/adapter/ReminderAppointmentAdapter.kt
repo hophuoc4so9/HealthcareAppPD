@@ -23,7 +23,8 @@ class ReminderAppointmentAdapter(
     private val items: MutableList<ReminderAppointmentItem> = mutableListOf(),
     private val onReminderToggle: (Reminder, Boolean) -> Unit,
     private val onReminderDelete: ((Reminder) -> Unit)? = null,
-    private val onAppointmentClick: ((Appointment) -> Unit)? = null
+    private val onAppointmentClick: ((Appointment) -> Unit)? = null,
+    private val onReminderClick: ((Reminder) -> Unit)? = null
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -126,7 +127,7 @@ class ReminderAppointmentAdapter(
         // Display time
         holder.tvTime.text = when {
             reminder.cronExpression != null -> parseCronExpression(reminder.cronExpression)
-            reminder.oneTimeAt != null -> parseOneTimeAt(reminder.oneTimeAt)
+            reminder.oneTimeAt != null -> parseOneTimeAt(reminder.oneTimeAt, reminder.timezoneName)
             else -> "Không rõ thời gian"
         }
         
@@ -142,6 +143,12 @@ class ReminderAppointmentAdapter(
             holder.itemView.setOnLongClickListener {
                 deleteCallback(reminder)
                 true
+            }
+        }
+
+        onReminderClick?.let { clickCallback ->
+            holder.itemView.setOnClickListener {
+                clickCallback(reminder)
             }
         }
     }
@@ -202,11 +209,16 @@ class ReminderAppointmentAdapter(
         if (startTime == null) return "Chưa xác định"
         
         return try {
-            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-            inputFormat.timeZone = TimeZone.getTimeZone("UTC")
+            // Try with milliseconds first
+            val inputFormat1 = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+            inputFormat1.timeZone = TimeZone.getTimeZone("UTC")
+            val inputFormat2 = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
+            inputFormat2.timeZone = TimeZone.getTimeZone("UTC")
             
-            val startDate = inputFormat.parse(startTime)
-            val endDate = endTime?.let { inputFormat.parse(it) }
+            val startDate = try { inputFormat1.parse(startTime) } catch (_: Exception) { inputFormat2.parse(startTime) }
+            val endDate = endTime?.let { 
+                try { inputFormat1.parse(it) } catch (_: Exception) { inputFormat2.parse(it) }
+            }
             
             val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
             val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
@@ -239,25 +251,28 @@ class ReminderAppointmentAdapter(
         return cron
     }
     
-    private fun parseOneTimeAt(isoDate: String?): String {
+    private fun parseOneTimeAt(isoDate: String?, timezoneName: String?): String {
         if (isoDate == null) return "Không rõ"
-        
         return try {
-            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-            inputFormat.timeZone = TimeZone.getTimeZone("UTC")
-            val date = inputFormat.parse(isoDate)
+            val formats = listOf(
+                "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+                "yyyy-MM-dd'T'HH:mm:ss'Z'",
+                "yyyy-MM-dd'T'HH:mm:ss"
+            )
+            var date: Date? = null
+            for (fmt in formats) {
+                try {
+                    val inputFormat = SimpleDateFormat(fmt, Locale.getDefault())
+                    inputFormat.timeZone = TimeZone.getTimeZone("UTC")
+                    date = inputFormat.parse(isoDate)
+                    if (date != null) break
+                } catch (_: Exception) {}
+            }
             val outputFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+            outputFormat.timeZone = TimeZone.getTimeZone(timezoneName ?: "Asia/Ho_Chi_Minh")
             date?.let { outputFormat.format(it) } ?: isoDate
         } catch (e: Exception) {
-            try {
-                val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
-                inputFormat.timeZone = TimeZone.getTimeZone("UTC")
-                val date = inputFormat.parse(isoDate)
-                val outputFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
-                date?.let { outputFormat.format(it) } ?: isoDate
-            } catch (e2: Exception) {
-                isoDate
-            }
+            isoDate
         }
     }
     
@@ -265,19 +280,14 @@ class ReminderAppointmentAdapter(
         if (isoDate == null) return 0L
         
         return try {
-            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-            inputFormat.timeZone = TimeZone.getTimeZone("UTC")
-            val date = inputFormat.parse(isoDate)
+            val inputFormat1 = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+            inputFormat1.timeZone = TimeZone.getTimeZone("UTC")
+            val inputFormat2 = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
+            inputFormat2.timeZone = TimeZone.getTimeZone("UTC")
+            val date = try { inputFormat1.parse(isoDate) } catch (_: Exception) { inputFormat2.parse(isoDate) }
             date?.time ?: 0L
         } catch (e: Exception) {
-            try {
-                val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
-                inputFormat.timeZone = TimeZone.getTimeZone("UTC")
-                val date = inputFormat.parse(isoDate)
-                date?.time ?: 0L
-            } catch (e2: Exception) {
-                0L
-            }
+            0L
         }
     }
 }

@@ -116,6 +116,7 @@ class ReminderAdapter(
             inputFormat.timeZone = TimeZone.getTimeZone("UTC")
             val date = inputFormat.parse(isoDate)
             val outputFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+            outputFormat.timeZone = TimeZone.getTimeZone("Asia/Ho_Chi_Minh")
             date?.let { outputFormat.format(it) } ?: isoDate
         } catch (e: Exception) {
             // Try without milliseconds
@@ -124,6 +125,7 @@ class ReminderAdapter(
                 inputFormat.timeZone = TimeZone.getTimeZone("UTC")
                 val date = inputFormat.parse(isoDate)
                 val outputFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+                outputFormat.timeZone = TimeZone.getTimeZone("Asia/Ho_Chi_Minh")
                 date?.let { outputFormat.format(it) } ?: isoDate
             } catch (e2: Exception) {
                 isoDate

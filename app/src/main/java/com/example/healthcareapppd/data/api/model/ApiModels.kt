@@ -260,7 +260,7 @@ data class CreateReminderRequest(
     val description: String? = null,
     val reminderType: String, // "medication", "sleep", "appointment", "general"
     val cronExpression: String? = null, // For recurring reminders: "0 8 * * *"
-    val oneTimeAt: String? = null, // For one-time reminders: ISO 8601 format
+    val oneTimeAt: String? = null,
     val timezoneName: String = "Asia/Ho_Chi_Minh"
 )
 

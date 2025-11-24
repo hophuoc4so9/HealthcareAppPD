@@ -75,7 +75,6 @@ class BmiCalculatorFragment : Fragment() {
             )
             
             result.onSuccess {
-                Toast.makeText(context, "Đã lưu chỉ số sức khỏe", Toast.LENGTH_SHORT).show()
             }.onFailure { error ->
                 // Silent fail - không hiện lỗi cho user
             }

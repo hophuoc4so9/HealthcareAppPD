@@ -63,7 +63,6 @@ class DetailDocterFragment : Fragment() {
         val photo: ImageView = view.findViewById(R.id.iv_doctor_photo)
         val name: TextView = view.findViewById(R.id.tv_doctor_name)
         val speciality: TextView = view.findViewById(R.id.tv_doctor_speciality)
-        val rating: TextView = view.findViewById(R.id.tv_doctor_rating)
         val distance: TextView = view.findViewById(R.id.tv_doctor_distance)
         val doctorInfoDesc: TextView = view.findViewById(R.id.tv_doctor_info_desc)
         val backButton: ImageView = view.findViewById(R.id.iv_back_arrow)
@@ -84,49 +83,29 @@ class DetailDocterFragment : Fragment() {
             name.text = doctor.fullName
             speciality.text = doctor.specialization
             
-            // Hiển thị kinh nghiệm
-            val experience = doctor.yearsOfExperience ?: 0
-            rating.text = if (experience > 0) {
-                "$experience năm kinh nghiệm"
-            } else {
-                "Bác sĩ mới"
-            }
-            
+
             // Hiển thị bệnh viện
             distance.text = doctor.hospitalAffiliation ?: "Chưa cập nhật"
             
             // Mô tả chi tiết
             val description = buildString {
-                append("Bác sĩ ${doctor.fullName} là chuyên gia trong lĩnh vực ${doctor.specialization}.")
+                append("${doctor.bio}")
                 
-                if (experience > 0) {
-                    append(" Với $experience năm kinh nghiệm, bác sĩ đã điều trị thành công cho hàng ngàn bệnh nhân.")
-                }
+
                 
                 append("\n\n📋 Thông tin liên hệ:")
                 
-                if (!doctor.phone.isNullOrEmpty()) {
-                    append("\n📞 Điện thoại: ${doctor.phone}")
+                if (!doctor.email.isNullOrEmpty()) {
+                    append("\nEmail: ${doctor.email}")
                 }
                 
-                if (!doctor.address.isNullOrEmpty()) {
-                    append("\n📍 Địa chỉ: ${doctor.address}")
+
+                
+                if (!doctor.clinicAddress.isNullOrEmpty()) {
+                    append("\nBệnh viện: ${doctor.clinicAddress}")
                 }
                 
-                if (!doctor.hospitalAffiliation.isNullOrEmpty()) {
-                    append("\n🏥 Bệnh viện: ${doctor.hospitalAffiliation}")
-                }
-                
-                append("\n\n📜 Giấy phép hành nghề: ${doctor.licenseNumber}")
-                
-                // Trạng thái xác thực
-                val statusText = when (doctor.verificationStatus) {
-                    "approved" -> "✅ Đã xác thực"
-                    "pending" -> "⏳ Đang chờ xác thực"
-                    "rejected" -> "❌ Chưa xác thực"
-                    else -> "❓ Chưa rõ"
-                }
-                append("\n\n$statusText")
+
             }
             
             doctorInfoDesc.text = description
@@ -137,7 +116,6 @@ class DetailDocterFragment : Fragment() {
             photo.setImageResource(R.drawable.ic_doctor)
             name.text = "Không có thông tin"
             speciality.text = "N/A"
-            rating.text = "N/A"
             distance.text = "N/A"
             doctorInfoDesc.text = "Thông tin bác sĩ không khả dụng. Vui lòng thử lại sau."
         }

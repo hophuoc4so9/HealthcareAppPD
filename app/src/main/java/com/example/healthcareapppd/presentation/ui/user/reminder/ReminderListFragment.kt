@@ -64,6 +64,10 @@ class ReminderListFragment : Fragment() {
             onAppointmentClick = { appointment ->
                 // TODO: Navigate to appointment details
                 Toast.makeText(requireContext(), "Lịch hẹn: ${appointment.doctorName}", Toast.LENGTH_SHORT).show()
+            },
+            onReminderClick = { reminder ->
+                selectedReminder = reminder
+                fabEdit.visibility = View.VISIBLE
             }
         )
         recyclerView.adapter = adapter
@@ -76,13 +80,25 @@ class ReminderListFragment : Fragment() {
         // Nút sửa reminder đã chọn
         fabEdit.setOnClickListener {
             selectedReminder?.let { reminder ->
-                // Navigate to edit screen with reminder data
+                // Parse day of week from cron expression
+                val dayOfWeek = reminder.cronExpression?.split(" ")?.getOrNull(4) ?: "*"
+                val dayIndex = when (dayOfWeek) {
+                    "1" -> 1 // Thứ 2
+                    "2" -> 2 // Thứ 3
+                    "3" -> 3 // Thứ 4
+                    "4" -> 4 // Thứ 5
+                    "5" -> 5 // Thứ 6
+                    "6" -> 6 // Thứ 7
+                    "0" -> 7 // Chủ nhật
+                    else -> 0 // Hàng ngày
+                }
                 val bundle = Bundle().apply {
                     putString("reminder_id", reminder.id)
                     putString("title", reminder.title)
                     putString("description", reminder.description)
                     putString("reminder_type", reminder.reminderType)
                     putString("cron_expression", reminder.cronExpression)
+                    putInt("repeat_day_index", dayIndex)
                 }
                 findNavController().navigate(R.id.action_reminderList_to_editReminder, bundle)
             }
@@ -117,7 +133,18 @@ class ReminderListFragment : Fragment() {
             progressBar.visibility = View.GONE
             
             val reminderList = remindersResult.getOrNull() ?: emptyList()
-            val appointmentList = appointmentsResult.getOrNull() ?: emptyList()
+            val appointmentListRaw = appointmentsResult.getOrNull() ?: emptyList()
+            // Filter appointments: only show if endTime > current time (upcoming)
+            val now = System.currentTimeMillis()
+            val appointmentList = appointmentListRaw.filter { appointment: Appointment ->
+                try {
+                    appointment.endTime?.let { endTimeStr ->
+                        java.time.Instant.parse(endTimeStr).toEpochMilli() > now
+                    } ?: false
+                } catch (e: Exception) {
+                    false
+                }
+            }
             
             reminders.clear()
             reminders.addAll(reminderList)
