@@ -18,35 +18,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 
-/**
- * HEALTH CONNECT MANAGER
- * 
- * Thu thập 4 chỉ số từ Health Connect (Android 14+):
- * 1. Bước chân (Steps)
- * 2. Calories tiêu hao (Total Calories Burned)
- * 3. Quãng đường (Distance)
- * 4. Giấc ngủ (Sleep)
- * 
- * CÁCH SỬ DỤNG:
- * 
- * 1. Cài đặt Health Connect app từ Play Store
- *    https://play.google.com/store/apps/details?id=com.google.android.apps.healthdata
- * 
- * 2. Kết nối với app khác (Google Fit, Samsung Health, Fitbit...)
- * 
- * 3. Request permissions:
- *    val requestPermissions = registerForActivityResult(
- *        HealthConnectManager.PermissionsContract()
- *    ) { granted ->
- *        if (granted.containsAll(PERMISSIONS)) {
- *            // Đã có quyền, đọc dữ liệu
- *        }
- *    }
- *    requestPermissions.launch(PERMISSIONS)
- * 
- * 4. Đọc dữ liệu:
- *    val data = healthConnectManager.readTodayData()
- */
+
 class HealthConnectManager(private val context: Context) {
     
     companion object {

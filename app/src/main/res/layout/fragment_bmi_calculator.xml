@@ -168,7 +168,15 @@
                 android:textStyle="bold"
                 tools:text="Bình thường"
                 tools:textColor="@color/teal_700"/>
-
+            <TextView
+                android:id="@+id/tvAdvice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Lời khuyên sức khỏe sẽ hiện ở đây..."
+                android:textColor="#555555"
+                android:textSize="14sp"
+                android:fontFamily="sans-serif-medium"/>
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

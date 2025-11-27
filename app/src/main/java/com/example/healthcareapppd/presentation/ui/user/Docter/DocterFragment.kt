@@ -97,7 +97,7 @@ class DocterFragment : Fragment() {
                 context = requireContext(),
                 page = 1,
                 limit = 50,
-                status = null // Remove status filter to avoid 403
+                status = null
             ).fold(
                 onSuccess = { doctors ->
                     progressBar.visibility = View.GONE

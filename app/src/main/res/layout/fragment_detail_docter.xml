@@ -78,14 +78,7 @@
                 android:textColor="@android:color/darker_gray"
                 android:textSize="14sp" />
 
-            <Button
-                android:id="@+id/btn_see_more"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Xem thêm"
-                android:textColor="@color/primary_blue" />
+
         </LinearLayout>
 
         <!-- Appointment Booking Section -->

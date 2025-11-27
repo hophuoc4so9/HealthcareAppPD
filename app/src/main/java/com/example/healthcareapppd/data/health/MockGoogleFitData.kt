@@ -13,11 +13,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.random.Random
 
-/**
- * MOCK GOOGLE FIT DATA - ĐỂ TEST KHÔNG CẦN THIẾT BỊ THẬT
- * 
- * Tạo dữ liệu giả lập từ Google Fit để test API integration
- */
+
 class MockGoogleFitData(
     private val context: Context,
     private val tokenManager: TokenManager,

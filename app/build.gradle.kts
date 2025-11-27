@@ -24,6 +24,9 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    aaptOptions {
+        noCompress("tflite")
+    }
 
     buildTypes {
         release {
@@ -88,7 +91,12 @@ dependencies {
     
     // MPAndroidChart for charts
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
-    
+    // MediaPipe Tasks Text
+    implementation("com.google.mediapipe:tasks-text:0.10.14")
+    // Google AI SDK for Android (Gemini)
+    implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
+
+    implementation("io.noties.markwon:core:4.6.2")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

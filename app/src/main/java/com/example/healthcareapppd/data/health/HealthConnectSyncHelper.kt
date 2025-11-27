@@ -9,9 +9,7 @@ import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 
-/**
- * Helper để sync dữ liệu từ Health Connect lên API server
- */
+
 class HealthConnectSyncHelper(
     private val context: Context,
     private val tokenManager: TokenManager,
@@ -135,7 +133,7 @@ class HealthConnectSyncHelper(
                 
                 // 4. Giấc ngủ
                 if (data.sleepMinutes > 0) {
-                    onProgress("😴 Đang upload ${data.sleepMinutes} phút ngủ...")
+                    onProgress("Đang upload ${data.sleepMinutes} phút ngủ...")
                     
                     // Sleep time: từ 20:00 ngày hôm trước (khớp với readSleep trong HealthConnectManager)
                     val sleepCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))

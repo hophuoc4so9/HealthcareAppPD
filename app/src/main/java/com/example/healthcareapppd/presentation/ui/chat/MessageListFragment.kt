@@ -31,10 +31,10 @@ class MessageListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_message_list, container, false)
-        
+
         recyclerView = view.findViewById(R.id.rvSessions)
         progressBar = view.findViewById(R.id.progressBar)
-        
+
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         val userRole = com.example.healthcareapppd.utils.TokenManager.getInstance()?.getUserRole() ?: "patient"
@@ -60,7 +60,7 @@ class MessageListFragment : Fragment() {
                 onSuccess = { conversationList ->
                     progressBar.visibility = View.GONE
                     adapter.updateConversations(conversationList)
-                    
+
                     if (conversationList.isEmpty()) {
                         Toast.makeText(requireContext(), "Chưa có cuộc trò chuyện nào", Toast.LENGTH_SHORT).show()
                     }

@@ -43,10 +43,10 @@ class ReportFragment : Fragment() {
     ) { permissions ->
         val allGranted = permissions.values.all { it }
         if (allGranted) {
-            Toast.makeText(context, "✅ Đã cấp quyền Health Connect", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Đã cấp quyền Health Connect", Toast.LENGTH_SHORT).show()
             syncHealthConnectData()
         } else {
-            Toast.makeText(context, "❌ Cần cấp quyền để đọc dữ liệu sức khỏe", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "Cần cấp quyền để đọc dữ liệu sức khỏe", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -146,13 +146,11 @@ class ReportFragment : Fragment() {
                     }
                 }
                 
-                // Delay một chút để server kịp xử lý
                 kotlinx.coroutines.delay(1000)
                 
-                // Reload dữ liệu
                 loadTodayMetrics()
                 
-                Toast.makeText(context, "✅ Đã đồng bộ Health Connect!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Đã đồng bộ Health Connect!", Toast.LENGTH_SHORT).show()
             } catch (e: Exception) {
                 binding.tvMockProgress.text = "❌ Lỗi: ${e.message}"
                 Toast.makeText(context, "Lỗi: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -199,21 +197,18 @@ class ReportFragment : Fragment() {
         val dateFormat = SimpleDateFormat("dd 'Tháng' MM, yyyy", Locale("vi"))
         binding.txtCurrentDate.text = dateFormat.format(Date())
     }
-    
+
     private fun loadLatestVitals() {
         val token = tokenManager.getToken() ?: return
-        val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-        
+
         viewLifecycleOwner.lifecycleScope.launch {
-            // Load quãng đường hôm nay
-            val distanceResult = getHealthMetricsUseCase(token, "distance_meters", null, null)
-            distanceResult.onSuccess { metrics ->
-                Log.d("ReportFragment", "✅ Distance metrics count: ${metrics.size}")
-                val todayMetrics = metrics.filter { 
-                    it.startTime.startsWith(today) || it.endTime.startsWith(today)
+            getHealthMetricsUseCase(token, "distance_meters", null, null).onSuccess { metrics ->
+                // SỬA Ở ĐÂY: Kiểm tra cả endTime
+                val todayMetrics = metrics.filter {
+                    isDateToday(it.startTime) || isDateToday(it.endTime)
                 }
                 val totalDistance = todayMetrics.sumOf { it.value.toDoubleOrNull() ?: 0.0 }
-                // Hiển thị theo km nếu > 1000m, ngược lại hiển thị m
+
                 _binding?.let { binding ->
                     if (totalDistance >= 1000) {
                         val km = totalDistance / 1000
@@ -222,67 +217,79 @@ class ReportFragment : Fragment() {
                         binding.txtHeartRate.text = String.format("%.0f m", totalDistance)
                     }
                 }
-            }.onFailure {
-                Log.e("ReportFragment", "❌ Failed to load distance: ${it.message}")
-                _binding?.txtHeartRate?.text = "0 m"
             }
         }
     }
-    
+    private fun isDateToday(utcDateString: String?): Boolean {
+        if (utcDateString == null) return false
+        return try {
+            val serverFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+            serverFormat.timeZone = TimeZone.getTimeZone("UTC")
+
+            val date = serverFormat.parse(utcDateString) ?: return false
+
+            val todayCal = Calendar.getInstance()
+            val dateCal = Calendar.getInstance()
+            dateCal.time = date
+
+            todayCal.get(Calendar.YEAR) == dateCal.get(Calendar.YEAR) &&
+                    todayCal.get(Calendar.DAY_OF_YEAR) == dateCal.get(Calendar.DAY_OF_YEAR)
+        } catch (e: Exception) {
+            false
+        }
+    }
     private fun loadTodayMetrics() {
         val token = tokenManager.getToken() ?: return
-        
-        val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-        Log.d("ReportFragment", "📊 Loading metrics for date: $today")
-        
+
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        val calendar = Calendar.getInstance()
+
+        calendar.add(Calendar.DAY_OF_YEAR, 1)
+        val endDateStr = dateFormat.format(calendar.time)
+
+        calendar.add(Calendar.DAY_OF_YEAR, -8)
+        val startDateStr = dateFormat.format(calendar.time) // Ví dụ: 2025-11-18
+
+
         viewLifecycleOwner.lifecycleScope.launch {
-            // Load bước chân hôm nay - thử không filter date
-            val stepsResult = getHealthMetricsUseCase(token, "steps", null, null)
-            stepsResult.onSuccess { metrics ->
-                Log.d("ReportFragment", "✅ Steps metrics count: ${metrics.size}")
-                metrics.forEach { 
-                    Log.d("ReportFragment", "   - Steps: ${it.value} (${it.startTime} to ${it.endTime})")
+
+            // --- 1. BƯỚC CHÂN ---
+            // Truyền startDateStr và endDateStr thay vì null
+            getHealthMetricsUseCase(token, "steps", startDateStr, endDateStr).onSuccess { metrics ->
+                val todayMetrics = metrics.filter {
+                    isDateToday(it.startTime) || isDateToday(it.endTime)
                 }
-                // Filter local theo date
-                val todayMetrics = metrics.filter { 
-                    it.startTime.startsWith(today) || it.endTime.startsWith(today)
-                }
-                Log.d("ReportFragment", "   - Today metrics: ${todayMetrics.size}")
-                val totalSteps = todayMetrics.sumOf { it.value.toIntOrNull() ?: 0 }
+                val totalSteps = todayMetrics.sumOf { it.value.toDoubleOrNull()?.toInt() ?: 0 }
                 _binding?.txtSteps?.text = String.format("%,d", totalSteps)
-            }.onFailure {
-                Log.e("ReportFragment", "❌ Failed to load steps: ${it.message}")
-                _binding?.txtSteps?.text = "0"
             }
-            
-            // Load calories hôm nay
-            val caloriesResult = getHealthMetricsUseCase(token, "active_calories", null, null)
-            caloriesResult.onSuccess { metrics ->
-                Log.d("ReportFragment", "✅ Calories metrics count: ${metrics.size}")
-                val todayMetrics = metrics.filter { 
-                    it.startTime.startsWith(today) || it.endTime.startsWith(today)
+
+            // --- 2. CALORIES (Quan trọng nhất) ---
+            // Truyền startDateStr và endDateStr vào đây!
+            getHealthMetricsUseCase(token, "active_calories", startDateStr, endDateStr).onSuccess { metrics ->
+
+                // Log để kiểm tra xem ID 86 đã về chưa
+                Log.d("DEBUG_CALO", "Số bản ghi tải về: ${metrics.size}")
+                if (metrics.isNotEmpty()) {
+                    Log.d("DEBUG_CALO", "Bản ghi mới nhất: ${metrics[0].value} - ${metrics[0].endTime}")
                 }
-                val totalCalories = todayMetrics.sumOf { it.value.toIntOrNull() ?: 0 }
+
+                val todayMetrics = metrics.filter {
+                    isDateToday(it.startTime) || isDateToday(it.endTime)
+                }
+
+                val totalCalories = todayMetrics.sumOf { it.value.toDoubleOrNull()?.toInt() ?: 0 }
                 _binding?.txtCalories?.text = String.format("%,d", totalCalories)
-            }.onFailure {
-                Log.e("ReportFragment", "❌ Failed to load calories: ${it.message}")
-                _binding?.txtCalories?.text = "0"
             }
-            
-            // Load giấc ngủ
-            val sleepResult = getHealthMetricsUseCase(token, "sleep_duration_minutes", null, null)
-            sleepResult.onSuccess { metrics ->
-                Log.d("ReportFragment", "✅ Sleep metrics count: ${metrics.size}")
-                val todayMetrics = metrics.filter { 
-                    it.startTime.startsWith(today) || it.endTime.startsWith(today)
+
+            // --- 3. GIẤC NGỦ ---
+            getHealthMetricsUseCase(token, "sleep_duration_minutes", startDateStr, endDateStr).onSuccess { metrics ->
+                val todayMetrics = metrics.filter {
+                    isDateToday(it.startTime) || isDateToday(it.endTime)
                 }
-                val totalSleep = todayMetrics.sumOf { it.value.toIntOrNull() ?: 0 }
+                val totalSleep = todayMetrics.sumOf { it.value.toDoubleOrNull()?.toInt() ?: 0 }
                 val hours = totalSleep / 60
                 val minutes = totalSleep % 60
                 _binding?.txtSleep?.text = "${hours}h ${minutes}m"
-            }.onFailure {
-                Log.e("ReportFragment", "❌ Failed to load sleep: ${it.message}")
-                _binding?.txtSleep?.text = "0h 0m"
             }
         }
     }

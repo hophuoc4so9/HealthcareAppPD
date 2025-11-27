@@ -1,19 +1,26 @@
 package com.example.healthcareapppd.presentation.ui.map
 
 import android.location.Location
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.healthcareapppd.data.api.*
 import com.example.healthcareapppd.data.api.getLatLng
 import com.example.healthcareapppd.data.api.model.Facility
 import com.example.healthcareapppd.domain.repository.FacilitiesRepository
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
+import com.example.healthcareapppd.utils.SemanticSearchEngine
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.text.Normalizer
+import java.util.regex.Pattern
+import kotlin.math.max
+
+// Hàm mở rộng để bỏ dấu tiếng Việt (Bình Dương -> binh duong)
+fun String.unaccent(): String {
+    val nfdNormalizedString = Normalizer.normalize(this, Normalizer.Form.NFD)
+    val pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+")
+    return pattern.matcher(nfdNormalizedString).replaceAll("").lowercase().trim()
+}
 
 sealed class FacilitiesUiState {
     object Loading : FacilitiesUiState()
@@ -21,7 +28,6 @@ sealed class FacilitiesUiState {
     data class Error(val message: String) : FacilitiesUiState()
 }
 
-// Extension function để tính khoảng cách
 fun Facility.distanceFrom(userLat: Double, userLng: Double): Float {
     val facilityLatLng = this.getLatLng() ?: return Float.MAX_VALUE
     val results = FloatArray(1)
@@ -30,36 +36,34 @@ fun Facility.distanceFrom(userLat: Double, userLng: Double): Float {
         facilityLatLng.latitude, facilityLatLng.longitude,
         results
     )
-    return results[0] // Khoảng cách tính bằng mét
+    return results[0]
 }
 
 class HealthMapViewModel(
-    private val facilitiesRepository: FacilitiesRepository
+    private val facilitiesRepository: FacilitiesRepository,
+    private val searchEngine: SemanticSearchEngine
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<FacilitiesUiState>(FacilitiesUiState.Loading)
     val uiState: StateFlow<FacilitiesUiState> = _uiState.asStateFlow()
 
-    // Lưu vị trí người dùng
     private val _userLocation = MutableStateFlow<Pair<Double, Double>?>(null)
     val userLocation: StateFlow<Pair<Double, Double>?> = _userLocation.asStateFlow()
 
-    // Danh sách gốc từ API
     private val _masterFacilityList = MutableStateFlow<List<Facility>>(emptyList())
 
-    // Truy vấn tìm kiếm
+    // Cache Vector: ID -> Vector
+    private val facilityVectorCache = mutableMapOf<String, FloatArray>()
+
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
-    // Bộ lọc loại cơ sở
     private val _selectedType = MutableStateFlow<String?>(null)
     val selectedType: StateFlow<String?> = _selectedType.asStateFlow()
 
-    // Sắp xếp theo khoảng cách
     private val _sortByDistance = MutableStateFlow(false)
     val sortByDistance: StateFlow<Boolean> = _sortByDistance.asStateFlow()
 
-    // Các hàm công khai để cập nhật trạng thái
     fun setSearchQuery(query: String) {
         _searchQuery.value = query
     }
@@ -76,7 +80,7 @@ class HealthMapViewModel(
         _userLocation.value = Pair(lat, lng)
     }
 
-    // StateFlow kết hợp tìm kiếm, lọc và sắp xếp
+    // --- CORE LOGIC: TÌM KIẾM & LỌC ---
     val filteredFacilities: StateFlow<List<Facility>> = combine(
         _masterFacilityList,
         _searchQuery,
@@ -86,20 +90,54 @@ class HealthMapViewModel(
     ) { facilities, query, type, sortDistance, location ->
         var filteredList = facilities
 
-        // Áp dụng bộ lọc loại
+        // 1. Lọc theo Loại (Type)
         if (type != null) {
             filteredList = filteredList.filter { it.type.equals(type, ignoreCase = true) }
         }
 
-        // Áp dụng tìm kiếm
+        // 2. Tìm kiếm thông minh (Hybrid: Keyword + AI)
         if (query.isNotBlank()) {
-            filteredList = filteredList.filter {
-                (it.name?.contains(query, ignoreCase = true) == true) ||
-                        (it.address?.contains(query, ignoreCase = true) == true)
+            // Encode query sang vector
+            val queryVector = searchEngine.encode(query)
+
+            // Debug Log nếu Vector lỗi
+            if (queryVector == null) Log.e("SearchDebug", "⚠️ Query Vector NULL")
+
+            // Chuẩn hóa query để tìm chính xác (binh duong)
+            val queryNormalized = query.unaccent()
+
+            filteredList = filteredList.mapNotNull { facility ->
+                // --- A. Text Match (Tuyệt đối) ---
+                val nameNorm = facility.name?.unaccent() ?: ""
+                val addressNorm = facility.address?.unaccent() ?: ""
+                val isTextMatch = nameNorm.contains(queryNormalized) || addressNorm.contains(queryNormalized)
+                val textScore = if (isTextMatch) 1.0f else 0.0f
+
+                // --- B. AI Match (Tương đối) ---
+                val facilityId = facility.id.toString()
+                val facilityVector = facilityVectorCache[facilityId]
+                var aiScore = 0.0f
+
+                if (queryVector != null && facilityVector != null) {
+                    aiScore = searchEngine.cosineSimilarity(queryVector, facilityVector)
+                }
+
+                // --- C. Debugging ---
+                // In log để bạn kiểm tra tại sao kết quả hiện/ẩn
+                if (textScore > 0 || aiScore > 0.15) {
+                    Log.d("SearchDebug", "Facility: ${facility.name} | Text: $textScore | AI: $aiScore")
+                }
+
+                // --- D. Quyết định ---
+                // Lấy điểm cao nhất. Ngưỡng AI là 0.25
+                val finalScore = max(textScore, aiScore)
+                if (finalScore > 0.25f) Pair(facility, finalScore) else null
             }
+                .sortedByDescending { it.second } // Xếp theo điểm số
+                .map { it.first }
         }
 
-        // Sắp xếp theo khoảng cách nếu được bật
+        // 3. Sắp xếp khoảng cách
         if (sortDistance && location != null) {
             filteredList = filteredList.sortedBy {
                 it.distanceFrom(location.first, location.second)
@@ -107,11 +145,13 @@ class HealthMapViewModel(
         }
 
         filteredList
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = emptyList()
-    )
+    }
+        .flowOn(Dispatchers.Default) // Chạy trên background thread
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
 
     fun fetchNearestFacilities(lat: Double, lng: Double, radius: Int = 40000, limit: Int = 50) {
         _uiState.value = FacilitiesUiState.Loading
@@ -128,6 +168,10 @@ class HealthMapViewModel(
             result.onSuccess { facilities ->
                 _masterFacilityList.value = facilities
                 _uiState.value = FacilitiesUiState.Success(facilities)
+
+                // [QUAN TRỌNG] Tạo vector ngay khi có dữ liệu
+                prepareFacilityVectors(facilities)
+
             }.onFailure { throwable ->
                 _uiState.value = FacilitiesUiState.Error(
                     throwable.message ?: "An unknown error occurred"
@@ -136,9 +180,30 @@ class HealthMapViewModel(
         }
     }
 
+    private fun prepareFacilityVectors(facilities: List<Facility>) {
+        Log.d("SearchDebug", "🔄 Bắt đầu tạo Vector cho ${facilities.size} cơ sở...")
+        viewModelScope.launch(Dispatchers.Default) {
+            facilities.forEach { facility ->
+                // Kết hợp Tên + Loại + ĐỊA CHỈ để AI hiểu ngữ cảnh
+                val textToEmbed = "${facility.name ?: ""} ${facility.type ?: ""} ${facility.address ?: ""}"
+
+                val vector = searchEngine.encode(textToEmbed)
+                if (vector != null) {
+                    facilityVectorCache[facility.id.toString()] = vector
+                }
+            }
+            Log.d("SearchDebug", "✅ Đã tạo xong Vector Cache. Size: ${facilityVectorCache.size}")
+        }
+    }
+
     fun clearFilters() {
         _searchQuery.value = ""
         _selectedType.value = null
         _sortByDistance.value = false
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        searchEngine.close()
     }
 }

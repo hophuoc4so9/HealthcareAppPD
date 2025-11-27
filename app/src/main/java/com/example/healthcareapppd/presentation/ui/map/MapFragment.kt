@@ -8,14 +8,9 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -25,10 +20,11 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.healthcareapppd.R
-import com.example.healthcareapppd.data.api.model.Facility
 import com.example.healthcareapppd.data.api.RetrofitClient
 import com.example.healthcareapppd.data.api.getLatLng
+import com.example.healthcareapppd.data.api.model.Facility
 import com.example.healthcareapppd.domain.repository.FacilitiesRepository
+import com.example.healthcareapppd.utils.SemanticSearchEngine // Import Class AI
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -62,9 +58,11 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
     private lateinit var clearFiltersButton: ImageButton
     private lateinit var progressBar: ProgressBar
 
+    // [KHỞI TẠO VIEWMODEL]
     private val viewModel: HealthMapViewModel by viewModels {
         HealthMapViewModelFactory(
-            FacilitiesRepository(RetrofitClient.instance)
+            FacilitiesRepository(RetrofitClient.instance),
+            SemanticSearchEngine(requireContext().applicationContext) // Dùng Application Context
         )
     }
 
@@ -81,14 +79,12 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initializeViews(view)
         setupRecyclerView(view)
         setupSearchBar()
         setupChips()
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
         mapFragment?.getMapAsync(this)
 
@@ -118,7 +114,6 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
     private fun setupRecyclerView(view: View) {
         facilityAdapter = FacilityAdapter(
             onItemClicked = { facility ->
-                // Click thường - zoom vào marker trên bản đồ
                 val latLng = facility.getLatLng()
                 latLng?.let {
                     googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(it, 15f))
@@ -126,7 +121,6 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
                 }
             },
             onItemLongClicked = { facility ->
-                // Long click - điều hướng bằng Google Maps
                 NavigationHelper.startTurnByTurnNavigation(requireContext(), facility)
             }
         )
@@ -143,12 +137,6 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
                 viewModel.setSearchQuery(s?.toString() ?: "")
             }
         })
-
-        filterButton.setOnClickListener {
-            // TODO: Mở bottom sheet filter nâng cao
-            Toast.makeText(requireContext(), "Bộ lọc nâng cao", Toast.LENGTH_SHORT).show()
-        }
-
         clearFiltersButton.setOnClickListener {
             viewModel.clearFilters()
             searchEditText.text.clear()
@@ -157,53 +145,20 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
     }
 
     private fun setupChips() {
-        // Chip sắp xếp theo khoảng cách
-        chipSortDistance.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.setSortByDistance(isChecked)
-        }
-
-        // Chip lọc theo loại
-        chipHospital.setOnCheckedChangeListener { _, isChecked ->
-            updateTypeFilter(isChecked, "hospital")
-        }
-
-        chipClinic.setOnCheckedChangeListener { _, isChecked ->
-            updateTypeFilter(isChecked, "clinic")
-        }
-
-        chipPharmacy.setOnCheckedChangeListener { _, isChecked ->
-            updateTypeFilter(isChecked, "pharmacy")
-        }
-
-        chipDentist.setOnCheckedChangeListener { _, isChecked ->
-            updateTypeFilter(isChecked, "dentist")
-        }
+        chipSortDistance.setOnCheckedChangeListener { _, isChecked -> viewModel.setSortByDistance(isChecked) }
+        chipHospital.setOnCheckedChangeListener { _, isChecked -> updateTypeFilter(isChecked, "hospital") }
+        chipClinic.setOnCheckedChangeListener { _, isChecked -> updateTypeFilter(isChecked, "clinic") }
+        chipPharmacy.setOnCheckedChangeListener { _, isChecked -> updateTypeFilter(isChecked, "pharmacy") }
+        chipDentist.setOnCheckedChangeListener { _, isChecked -> updateTypeFilter(isChecked, "dentist") }
     }
 
     private fun updateTypeFilter(isChecked: Boolean, type: String) {
         if (isChecked) {
-            // Bỏ chọn các chip khác (single selection cho type)
             when (type) {
-                "hospital" -> {
-                    chipClinic.isChecked = false
-                    chipPharmacy.isChecked = false
-                    chipDentist.isChecked = false
-                }
-                "clinic" -> {
-                    chipHospital.isChecked = false
-                    chipPharmacy.isChecked = false
-                    chipDentist.isChecked = false
-                }
-                "pharmacy" -> {
-                    chipHospital.isChecked = false
-                    chipClinic.isChecked = false
-                    chipDentist.isChecked = false
-                }
-                "dentist" -> {
-                    chipHospital.isChecked = false
-                    chipClinic.isChecked = false
-                    chipPharmacy.isChecked = false
-                }
+                "hospital" -> { chipClinic.isChecked = false; chipPharmacy.isChecked = false; chipDentist.isChecked = false }
+                "clinic" -> { chipHospital.isChecked = false; chipPharmacy.isChecked = false; chipDentist.isChecked = false }
+                "pharmacy" -> { chipHospital.isChecked = false; chipClinic.isChecked = false; chipDentist.isChecked = false }
+                "dentist" -> { chipHospital.isChecked = false; chipClinic.isChecked = false; chipPharmacy.isChecked = false }
             }
             viewModel.setFilterType(type)
         } else {
@@ -213,22 +168,15 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
 
     @SuppressLint("PotentialBehaviorOverride")
     private fun setupMapListeners() {
-        // Click vào info window (chữ trên marker) để điều hướng
         googleMap.setOnInfoWindowClickListener { marker ->
             val facility = marker.tag as? Facility
-            facility?.let {
-                NavigationHelper.startTurnByTurnNavigation(requireContext(), it)
-            }
+            facility?.let { NavigationHelper.startTurnByTurnNavigation(requireContext(), it) }
         }
-
-        // Click vào marker để scroll đến item trong list
         googleMap.setOnMarkerClickListener { marker ->
             val facility = marker.tag as? Facility
             facility?.let {
                 val position = facilityAdapter.currentList.indexOf(it)
-                if (position != -1) {
-                    facilitiesRecyclerView.smoothScrollToPosition(position)
-                }
+                if (position != -1) facilitiesRecyclerView.smoothScrollToPosition(position)
             }
             false
         }
@@ -239,12 +187,8 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { state ->
                     when (state) {
-                        is FacilitiesUiState.Loading -> {
-                            progressBar.visibility = View.VISIBLE
-                        }
-                        is FacilitiesUiState.Success -> {
-                            progressBar.visibility = View.GONE
-                        }
+                        is FacilitiesUiState.Loading -> progressBar.visibility = View.VISIBLE
+                        is FacilitiesUiState.Success -> progressBar.visibility = View.GONE
                         is FacilitiesUiState.Error -> {
                             progressBar.visibility = View.GONE
                             Toast.makeText(requireContext(), "Lỗi: ${state.message}", Toast.LENGTH_SHORT).show()
@@ -257,31 +201,18 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.filteredFacilities.collect { facilities ->
-                    if (::googleMap.isInitialized) {
-                        updateMapMarkers(facilities)
-                    }
+                    if (::googleMap.isInitialized) updateMapMarkers(facilities)
                     facilityAdapter.submitList(facilities)
-
-                    // Cập nhật số lượng kết quả
                     resultsCountText.text = "Tìm thấy ${facilities.size} kết quả"
-
-                    // Hiển thị nút xóa filter nếu có filter đang hoạt động
-                    clearFiltersButton.visibility = if (
-                        viewModel.searchQuery.value.isNotBlank() ||
-                        viewModel.selectedType.value != null ||
-                        viewModel.sortByDistance.value
-                    ) View.VISIBLE else View.GONE
+                    clearFiltersButton.visibility = if (viewModel.searchQuery.value.isNotBlank() || viewModel.selectedType.value != null || viewModel.sortByDistance.value) View.VISIBLE else View.GONE
                 }
             }
         }
 
-        // Observe user location để cập nhật adapter
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.userLocation.collect { location ->
-                    location?.let {
-                        facilityAdapter.setUserLocation(it.first, it.second)
-                    }
+                    location?.let { facilityAdapter.setUserLocation(it.first, it.second) }
                 }
             }
         }
@@ -290,30 +221,18 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
     private fun updateMapMarkers(facilities: List<Facility>) {
         googleMap.clear()
         markers.clear()
-
         facilities.forEach { facility ->
             val latLng = facility.getLatLng()
             latLng?.let {
-                val markerOptions = MarkerOptions()
-                    .position(it)
-                    .title(facility.name ?: "Không có tên")
-                    .snippet(facility.type)
-
-                val marker = googleMap.addMarker(markerOptions)
+                val marker = googleMap.addMarker(MarkerOptions().position(it).title(facility.name ?: "Không có tên").snippet(facility.type))
                 marker?.tag = facility
-                if (marker != null) {
-                    markers[facility.id] = marker
-                }
+                if (marker != null) markers[facility.id] = marker
             }
         }
     }
 
     private fun checkLocationPermission() {
-        if (ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             getDeviceLocation()
         } else {
             locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
@@ -323,18 +242,14 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
     @SuppressLint("MissingPermission")
     private fun getDeviceLocation() {
         googleMap.isMyLocationEnabled = true
-        try {
-            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-                if (location != null) {
-                    val currentLatLng = LatLng(location.latitude, location.longitude)
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
-                    viewModel.fetchNearestFacilities(location.latitude, location.longitude)
-                } else {
-                    Toast.makeText(requireContext(), "Không thể lấy vị trí. Vui lòng bật dịch vụ vị trí.", Toast.LENGTH_SHORT).show()
-                }
+        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+            if (location != null) {
+                val currentLatLng = LatLng(location.latitude, location.longitude)
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
+                viewModel.fetchNearestFacilities(location.latitude, location.longitude)
+            } else {
+                Toast.makeText(requireContext(), "Không thể lấy vị trí.", Toast.LENGTH_SHORT).show()
             }
-        } catch (e: SecurityException) {
-            e.printStackTrace()
         }
     }
 }
