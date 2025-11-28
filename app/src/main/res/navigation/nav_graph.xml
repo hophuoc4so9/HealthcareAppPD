@@ -5,7 +5,6 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/navigation_home">
 
-    <!-- Authentication Fragments -->
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.healthcareapppd.presentation.ui.LoginFragment"
@@ -38,7 +37,6 @@
             app:popUpToInclusive="true" />
     </fragment>
 
-    <!-- Home and Main Fragments -->
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.example.healthcareapppd.presentation.ui.user.Home.HomeFragment"
@@ -81,13 +79,13 @@
             android:id="@+id/action_reminderList_to_editReminder"
             app:destination="@id/editReminderFragment" />
     </fragment>
-    
+
     <fragment
         android:id="@+id/addReminderFragment"
         android:name="com.example.healthcareapppd.presentation.ui.user.reminder.AddReminderFragment"
         android:label="Thêm Nhắc Nhở"
         tools:layout="@layout/reminder_fragment_add_item" />
-    
+
     <fragment
         android:id="@+id/editReminderFragment"
         android:name="com.example.healthcareapppd.presentation.ui.user.reminder.EditReminderFragment"
@@ -123,13 +121,13 @@
         <action
             android:id="@+id/action_reportFragment_to_bmiCalculatorFragment"
             app:destination="@id/bmiCalculatorFragment" />
-        
+
         <action
             android:id="@+id/action_reportFragment_to_healthChartFragment"
             app:destination="@id/healthChartFragment" />
 
     </fragment>
-    
+
     <fragment
         android:id="@+id/healthChartFragment"
         android:name="com.example.healthcareapppd.presentation.ui.user.chart.HealthChartFragment"
@@ -194,7 +192,6 @@
         android:label="Map"
         tools:layout="@layout/fragment_map" />
 
-    <!-- Patient Profile Fragments -->
     <fragment
         android:id="@+id/viewPatientProfileFragment"
         android:name="com.example.healthcareapppd.presentation.ui.user.Profile.ViewPatientProfileFragment"
@@ -230,6 +227,55 @@
             app:destination="@id/viewPatientProfileFragment"
             app:popUpTo="@id/editPatientProfileFragment"
             app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/doctorHomeFragment"
+        android:name="com.example.healthcareapppd.presentation.ui.DoctorHomeFragment"
+        android:label="Trang chủ Bác sĩ"
+        tools:layout="@layout/fragment_doctor_home">
+
+        <action
+            android:id="@+id/action_doctorHome_to_patientDetailFragment"
+            app:destination="@id/patientDetailFragment" />
+
+        <action
+            android:id="@+id/action_doctorHome_to_login"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/doctorHomeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/doctorPatientsFragment"
+        android:name="com.example.healthcareapppd.presentation.ui.DoctorPatientsFragment"
+        android:label="Danh sách bệnh nhân" />
+
+    <fragment
+        android:id="@+id/navigation_reports_doctor"
+        android:name="com.example.healthcareapppd.presentation.ui.DoctorReportFragment"
+        android:label="Danh sách bệnh nhân" />
+
+    <fragment
+        android:id="@+id/navigation_profile_doctor"
+        android:name="com.example.healthcareapppd.presentation.ui.DoctorProfileFragment"
+        android:label="Danh sách bệnh nhân" />
+    <fragment
+        android:id="@+id/navigation_reports_admin"
+        android:name="com.example.healthcareapppd.presentation.ui.AdminReportFragment"
+        android:label="Danh sách bệnh nhân" />
+
+    <fragment
+        android:id="@+id/navigation_home_admin"
+        android:name="com.example.healthcareapppd.presentation.ui.AdminHomeFragment"
+        android:label="Danh sách bệnh nhân" />
+    <fragment
+        android:id="@+id/patientDetailFragment"
+        android:name="com.example.healthcareapppd.presentation.ui.PatientDetailFragment"
+        android:label="Chi tiết bệnh nhân">
+        <argument
+            android:name="patient_id"
+            app:argType="string" />
     </fragment>
 
 </navigation>

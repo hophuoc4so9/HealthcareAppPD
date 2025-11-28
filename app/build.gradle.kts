@@ -97,6 +97,8 @@ dependencies {
     implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
 
     implementation("io.noties.markwon:core:4.6.2")
+    // Add SwipeRefreshLayout dependency
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

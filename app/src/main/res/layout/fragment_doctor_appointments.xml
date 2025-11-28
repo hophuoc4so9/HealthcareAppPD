@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipeRefresh"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#f5f5f5">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            app:singleSelection="true"
+            app:checkedChip="@id/chipAll">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tất cả"
+                style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipPending"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chờ xác nhận"
+                style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipCompleted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hoàn thành"
+                style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewAppointments"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            android:clipToPadding="false" />
+
+    </LinearLayout>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

@@ -200,6 +200,22 @@ data class UpdateVerificationStatusRequest(
     val verificationNotes: String? = null
 )
 
+// ==================== DOCTOR DASHBOARD ====================
+data class DoctorDashboardStats(
+    val totalAppointments: String,
+    val scheduledAppointments: String,
+    val completedAppointments: String,
+    val cancelledAppointments: String,
+    val totalPatients: String,
+    val upcomingAppointments: String,
+    val todayAppointments: String
+)
+
+data class DoctorDashboardStatsResponse(
+    val success: Boolean,
+    val data: DoctorDashboardStats?
+)
+
 // ==================== APPOINTMENTS ====================
 data class CreateAvailabilitySlotRequest(
     val startTime: String, // ISO 8601 format

@@ -1,0 +1,38 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:elevation="2dp"
+    android:layout_marginBottom="8dp">
+
+    <TextView
+        android:id="@+id/tvAppointmentDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ngày"
+        android:textStyle="bold"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/tvAppointmentTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thời gian"
+        android:textSize="14sp"/>
+
+    <TextView
+        android:id="@+id/tvAppointmentStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Trạng thái"
+        android:textSize="14sp"/>
+
+    <TextView
+        android:id="@+id/tvAppointmentNotes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ghi chú"
+        android:textSize="14sp"/>
+</LinearLayout>

@@ -1,6 +1,7 @@
 package com.example.healthcareapppd.data.api
 
 import com.example.healthcareapppd.data.api.model.*
+import retrofit2.Call
 import retrofit2.http.*
 
 interface DoctorApiService {
@@ -47,4 +48,8 @@ interface DoctorApiService {
         @Path("id") userId: String,
         @Body request: UpdateVerificationStatusRequest
     ): ApiResponse<DoctorProfile>
+
+    @GET("api/doctors/dashboard/stats")
+    fun getDashboardStats(
+    ): Call<DoctorDashboardStatsResponse>
 }

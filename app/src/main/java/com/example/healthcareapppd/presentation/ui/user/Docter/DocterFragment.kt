@@ -150,6 +150,7 @@ class DocterFragment : Fragment() {
 
     private fun setupRecyclerView(doctors: List<DoctorProfile>) {
         adapter = MyDoctorAdapter(doctors) { doctor ->
+            // Chuyển sang màn hình chi tiết bác sĩ, truyền dữ liệu doctor qua Bundle
             val bundle = Bundle().apply {
                 putSerializable("KEY_DOCTOR", doctor)
             }

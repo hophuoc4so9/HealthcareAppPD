@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tiêu đề"
+            android:textStyle="bold"/>
+        <EditText
+            android:id="@+id/etTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nhập tiêu đề bài viết"
+            android:inputType="text"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Đường dẫn ngoài (External URL)"
+            android:layout_marginTop="8dp"
+            android:textStyle="bold"/>
+        <EditText
+            android:id="@+id/etExternalUrl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="https://..."
+            android:inputType="textUri"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nội dung (Hỗ trợ Markdown)"
+            android:layout_marginTop="8dp"
+            android:textStyle="bold"/>
+        <EditText
+            android:id="@+id/etContent"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:gravity="top"
+            android:hint="Nhập nội dung..."
+            android:inputType="textMultiLine"
+            android:background="@android:drawable/edit_text"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Trạng thái"
+            android:layout_marginTop="8dp"
+            android:textStyle="bold"/>
+        <Spinner
+            android:id="@+id/spinnerStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"/>
+
+    </LinearLayout>
+</ScrollView>

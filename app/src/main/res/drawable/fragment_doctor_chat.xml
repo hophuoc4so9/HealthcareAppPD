@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f5f5f5">
+
+    <!-- Conversation List -->
+    <LinearLayout
+        android:id="@+id/conversationContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewConversations"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp" />
+
+    </LinearLayout>
+
+    <!-- Chat Window -->
+    <LinearLayout
+        android:id="@+id/chatContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <!-- Messages List -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewMessages"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="8dp"
+            android:clipToPadding="false"
+            android:background="#e5e5e5" />
+
+        <!-- Message Input -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:background="@android:color/white"
+            android:elevation="4dp"
+            android:gravity="center_vertical">
+
+            <EditText
+                android:id="@+id/etMessage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Nhập tin nhắn..."
+                android:padding="12dp"
+                android:background="@drawable/bg_message_input"
+                android:maxLines="4"
+                android:inputType="textMultiLine|textCapSentences" />
+
+            <ImageButton
+                android:id="@+id/btnSend"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="8dp"
+                android:src="@android:drawable/ic_menu_send"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:tint="?attr/colorPrimary"
+                android:contentDescription="Gửi tin nhắn" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>
